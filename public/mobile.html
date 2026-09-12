@@ -132,58 +132,106 @@ body{display:block;touch-action:manipulation}
 
 
 /* Mobile build v4: portrait-first cleanup */
-body[data-mobile-build="mobile-v4-20260912"] #shell:before{background:radial-gradient(circle at 50% -16%,rgba(255,255,255,.27),transparent 36%);opacity:.75}
-body[data-mobile-build="mobile-v4-20260912"] #touch{display:none!important}
-body[data-mobile-build="mobile-v4-20260912"] #seaFloor{height:7%;opacity:.86}
-body[data-mobile-build="mobile-v4-20260912"] .hud{top:max(10px,env(safe-area-inset-top));right:10px}
-body[data-mobile-build="mobile-v4-20260912"] .hud .pill{padding:7px 9px;border-radius:999px;background:rgba(0,27,44,.64);box-shadow:0 5px 16px rgba(0,10,18,.22)}
-body[data-mobile-build="mobile-v4-20260912"] .hud .big{font-size:17px}
-body[data-mobile-build="mobile-v4-20260912"] #toast{top:max(58px,8%);max-width:78vw;text-align:center;font-size:13px}
+body[data-mobile-build="mobile-v5-20260912"] #shell:before{background:radial-gradient(circle at 50% -16%,rgba(255,255,255,.27),transparent 36%);opacity:.75}
+body[data-mobile-build="mobile-v5-20260912"] #touch{display:none!important}
+body[data-mobile-build="mobile-v5-20260912"] #seaFloor{height:7%;opacity:.86}
+body[data-mobile-build="mobile-v5-20260912"] .hud{top:max(10px,env(safe-area-inset-top));right:10px}
+body[data-mobile-build="mobile-v5-20260912"] .hud .pill{padding:7px 9px;border-radius:999px;background:rgba(0,27,44,.64);box-shadow:0 5px 16px rgba(0,10,18,.22)}
+body[data-mobile-build="mobile-v5-20260912"] .hud .big{font-size:17px}
+body[data-mobile-build="mobile-v5-20260912"] #toast{top:max(58px,8%);max-width:78vw;text-align:center;font-size:13px}
 
 /* Start screen is a compact phone card rather than a shrunk desktop modal. */
-body[data-mobile-build="mobile-v4-20260912"] #startOverlay{padding:max(16px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom));background:linear-gradient(rgba(3,29,44,.5),rgba(2,18,26,.9))}
-body[data-mobile-build="mobile-v4-20260912"] #startOverlay .card{width:min(92vw,410px);max-height:calc(100dvh - 32px);padding:22px 18px 20px;border-radius:22px;background:rgba(5,35,53,.94)}
-body[data-mobile-build="mobile-v4-20260912"] #startOverlay .card h1{font-size:clamp(29px,8.5vw,39px);margin-bottom:10px}
-body[data-mobile-build="mobile-v4-20260912"] #startOverlay .card p{font-size:14.5px;line-height:1.42}
-body[data-mobile-build="mobile-v4-20260912"] .legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
-body[data-mobile-build="mobile-v4-20260912"] .legend span{justify-content:flex-start;padding:7px 8px;border-radius:12px;background:rgba(255,255,255,.045);font-size:12.5px}
-body[data-mobile-build="mobile-v4-20260912"] .legend img{width:30px;height:30px}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay{padding:max(16px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom));background:linear-gradient(rgba(3,29,44,.5),rgba(2,18,26,.9))}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card{width:min(92vw,410px);max-height:calc(100dvh - 32px);padding:22px 18px 20px;border-radius:22px;background:rgba(5,35,53,.94)}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card h1{font-size:clamp(29px,8.5vw,39px);margin-bottom:10px}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card p{font-size:14.5px;line-height:1.42}
+body[data-mobile-build="mobile-v5-20260912"] .legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
+body[data-mobile-build="mobile-v5-20260912"] .legend span{justify-content:flex-start;padding:7px 8px;border-radius:12px;background:rgba(255,255,255,.045);font-size:12.5px}
+body[data-mobile-build="mobile-v5-20260912"] .legend img{width:30px;height:30px}
 
 /* Kahu: image occupies its own clean upper field; dialogue is a fixed lower sheet. */
-body[data-mobile-build="mobile-v4-20260912"] #vnScene{background:radial-gradient(circle at 50% 18%,rgba(107,215,229,.38),transparent 29%),linear-gradient(#14657f 0%,#0b445f 48%,#05263c 100%)}
-body[data-mobile-build="mobile-v4-20260912"] #kahu{height:min(46dvh,390px);max-width:82vw;left:50%;bottom:42dvh;transform:translateX(-50%);object-fit:contain}
-body[data-mobile-build="mobile-v4-20260912"] #dialogue{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));padding:28px 17px 16px;border-radius:20px;font-size:17px;line-height:1.4;background:rgba(2,22,36,.96);border:1px solid rgba(178,235,245,.5);box-shadow:0 16px 35px rgba(0,0,0,.34);pointer-events:none}
-body[data-mobile-build="mobile-v4-20260912"] #nameplate{left:16px;top:-18px;font-size:15px;padding:7px 15px}
-body[data-mobile-build="mobile-v4-20260912"] #dialogue small{margin-top:7px;font-size:11.5px;opacity:.48}
-body[data-mobile-build="mobile-v4-20260912"] #kahuContinueBtn{margin-top:13px;padding:12px 14px;border-radius:13px;font-size:15px;font-weight:650;pointer-events:none}
-body[data-mobile-build="mobile-v4-20260912"] #kahuContinueBtn.ready{pointer-events:auto}
+body[data-mobile-build="mobile-v5-20260912"] #vnScene{background:radial-gradient(circle at 50% 18%,rgba(107,215,229,.38),transparent 29%),linear-gradient(#14657f 0%,#0b445f 48%,#05263c 100%)}
+body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(46dvh,390px);max-width:82vw;left:50%;bottom:42dvh;transform:translateX(-50%);object-fit:contain}
+body[data-mobile-build="mobile-v5-20260912"] #dialogue{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));padding:28px 17px 16px;border-radius:20px;font-size:17px;line-height:1.4;background:rgba(2,22,36,.96);border:1px solid rgba(178,235,245,.5);box-shadow:0 16px 35px rgba(0,0,0,.34);pointer-events:none}
+body[data-mobile-build="mobile-v5-20260912"] #nameplate{left:16px;top:-18px;font-size:15px;padding:7px 15px}
+body[data-mobile-build="mobile-v5-20260912"] #dialogue small{margin-top:7px;font-size:11.5px;opacity:.48}
+body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn{margin-top:13px;padding:12px 14px;border-radius:13px;font-size:15px;font-weight:650;pointer-events:none}
+body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn.ready{pointer-events:auto}
 
 /* Birthday: one contained card; confetti stays behind the content and nothing can overflow the phone. */
-body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen{padding:max(14px,env(safe-area-inset-top)) 12px max(14px,env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 38%,rgba(42,115,164,.25),transparent 43%),linear-gradient(#0b3d59,#041d31 64%,#031625)}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayCard{z-index:3;width:min(91vw,380px);max-height:calc(100dvh - 28px);padding:22px 14px 18px;border-radius:24px;overflow:hidden;background:rgba(3,24,40,.92);border:1px solid rgba(146,219,239,.32);box-shadow:0 20px 50px rgba(0,0,0,.38)}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayCard h2{font-size:clamp(25px,7vw,32px);margin:0 0 8px}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayDieStage{width:min(66vw,270px);height:min(66vw,270px);margin:2px auto 4px}
-body[data-mobile-build="mobile-v4-20260912"] #rollResult{font-size:clamp(17px,4.8vw,21px);min-height:1.3em;margin-top:3px}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayMessage{font-size:clamp(30px,8vw,38px);line-height:1.02;letter-spacing:.2px;white-space:normal;width:100%;margin:6px auto 0;overflow-wrap:normal}
-body[data-mobile-build="mobile-v4-20260912"] #birthdaySub{font-size:15px;margin-top:5px}
-body[data-mobile-build="mobile-v4-20260912"] #confettiLayer{z-index:1}
-body[data-mobile-build="mobile-v4-20260912"] .confetti{width:5px;height:10px;opacity:.72}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen.celebrating #birthdayCard h2{font-size:22px;opacity:.7;margin-bottom:2px}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(50vw,205px);height:min(50vw,205px);transition:width .35s ease,height .35s ease}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen.celebrating #rollResult{font-size:17px}
-body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen.celebrating #birthdayMessage{font-size:clamp(31px,8.4vw,40px)}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen{padding:max(14px,env(safe-area-inset-top)) 12px max(14px,env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 38%,rgba(42,115,164,.25),transparent 43%),linear-gradient(#0b3d59,#041d31 64%,#031625)}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayCard{z-index:3;width:min(91vw,380px);max-height:calc(100dvh - 28px);padding:22px 14px 18px;border-radius:24px;overflow:hidden;background:rgba(3,24,40,.92);border:1px solid rgba(146,219,239,.32);box-shadow:0 20px 50px rgba(0,0,0,.38)}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayCard h2{font-size:clamp(25px,7vw,32px);margin:0 0 8px}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(66vw,270px);height:min(66vw,270px);margin:2px auto 4px}
+body[data-mobile-build="mobile-v5-20260912"] #rollResult{font-size:clamp(17px,4.8vw,21px);min-height:1.3em;margin-top:3px}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayMessage{font-size:clamp(30px,8vw,38px);line-height:1.02;letter-spacing:.2px;white-space:normal;width:100%;margin:6px auto 0;overflow-wrap:normal}
+body[data-mobile-build="mobile-v5-20260912"] #birthdaySub{font-size:15px;margin-top:5px}
+body[data-mobile-build="mobile-v5-20260912"] #confettiLayer{z-index:1}
+body[data-mobile-build="mobile-v5-20260912"] .confetti{width:5px;height:10px;opacity:.72}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayCard h2{font-size:22px;opacity:.7;margin-bottom:2px}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(50vw,205px);height:min(50vw,205px);transition:width .35s ease,height .35s ease}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #rollResult{font-size:17px}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayMessage{font-size:clamp(31px,8.4vw,40px)}
 
 @media (max-height:720px){
- body[data-mobile-build="mobile-v4-20260912"] #kahu{height:min(40dvh,285px);bottom:45dvh}
- body[data-mobile-build="mobile-v4-20260912"] #dialogue{font-size:15.5px;padding:25px 14px 13px}
- body[data-mobile-build="mobile-v4-20260912"] #kahuContinueBtn{padding:10px 12px;margin-top:9px}
- body[data-mobile-build="mobile-v4-20260912"] #birthdayDieStage{width:min(47vw,190px);height:min(47vw,190px)}
- body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(39vw,160px);height:min(39vw,160px)}
+ body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(40dvh,285px);bottom:45dvh}
+ body[data-mobile-build="mobile-v5-20260912"] #dialogue{font-size:15.5px;padding:25px 14px 13px}
+ body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn{padding:10px 12px;margin-top:9px}
+ body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(47vw,190px);height:min(47vw,190px)}
+ body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(39vw,160px);height:min(39vw,160px)}
+}
+
+
+/* Mobile build v5: phone-only rewrite. Desktop file is untouched. */
+body[data-mobile-build="mobile-v5-20260912"]{background:#052238!important}
+body[data-mobile-build="mobile-v5-20260912"] #shell{width:100vw!important;height:100dvh!important;min-height:100svh!important;background:linear-gradient(#59c9e7 0%,#1382ae 31%,#07557c 66%,#052f49 100%)!important}
+body[data-mobile-build="mobile-v5-20260912"] #shell:before{background:radial-gradient(circle at 50% -8%,rgba(255,255,255,.28),transparent 33%)!important;opacity:.9!important}
+body[data-mobile-build="mobile-v5-20260912"] #seaFloor{height:5.5%!important;opacity:.75!important}
+body[data-mobile-build="mobile-v5-20260912"] #touch{display:none!important}
+body[data-mobile-build="mobile-v5-20260912"] .hud{top:max(12px,env(safe-area-inset-top))!important;left:auto!important;right:12px!important;display:block!important}
+body[data-mobile-build="mobile-v5-20260912"] .hud .pill{padding:6px 9px!important;border-radius:999px!important;background:rgba(2,29,46,.58)!important;border:1px solid rgba(214,248,255,.22)!important;box-shadow:none!important}
+body[data-mobile-build="mobile-v5-20260912"] .hud .big{font-size:16px!important;line-height:1!important}
+body[data-mobile-build="mobile-v5-20260912"] #scorePill{display:none!important}
+body[data-mobile-build="mobile-v5-20260912"] #toast{top:max(54px,7%)!important;max-width:76vw!important;font-size:12px!important;padding:7px 10px!important;border-radius:999px!important;background:rgba(2,28,44,.8)!important}
+
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay{padding:max(18px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom))!important;background:linear-gradient(rgba(3,27,42,.28),rgba(2,18,29,.82))!important;overflow:hidden!important}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card{width:min(90vw,390px)!important;max-height:calc(100dvh - 38px)!important;overflow:hidden!important;padding:20px 16px 18px!important;border-radius:20px!important;background:rgba(4,31,48,.94)!important;border:1px solid rgba(193,241,250,.33)!important;box-shadow:0 18px 44px rgba(0,9,18,.35)!important}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card h1{font-size:clamp(27px,7.8vw,36px)!important;line-height:1.02!important;margin:0 0 8px!important}
+body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card p{font-size:13.5px!important;line-height:1.36!important;margin:8px auto!important}
+body[data-mobile-build="mobile-v5-20260912"] .legend{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin:12px 0!important}
+body[data-mobile-build="mobile-v5-20260912"] .legend span{min-width:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;padding:7px 3px!important;border-radius:12px!important;background:rgba(255,255,255,.05)!important;font-size:11px!important}
+body[data-mobile-build="mobile-v5-20260912"] .legend img{width:26px!important;height:26px!important}
+body[data-mobile-build="mobile-v5-20260912"] #startBtn{width:100%!important;margin-top:2px!important;padding:11px 16px!important;border-radius:13px!important;font-size:15px!important}
+
+body[data-mobile-build="mobile-v5-20260912"] #vnScene{background:linear-gradient(#17667f 0%,#0a435e 52%,#05283f 100%)!important}
+body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(34dvh,270px)!important;max-width:76vw!important;width:auto!important;left:50%!important;top:max(8vh,58px)!important;bottom:auto!important;transform:translateX(-50%)!important;object-fit:contain!important}
+body[data-mobile-build="mobile-v5-20260912"] #dialogue{left:14px!important;right:14px!important;bottom:max(16px,env(safe-area-inset-bottom))!important;min-height:0!important;padding:28px 16px 15px!important;border-radius:18px!important;font-size:16px!important;line-height:1.38!important;background:rgba(2,21,34,.96)!important;border:1px solid rgba(184,234,244,.48)!important;box-shadow:0 14px 30px rgba(0,0,0,.32)!important;pointer-events:none!important}
+body[data-mobile-build="mobile-v5-20260912"] #nameplate{left:14px!important;top:-17px!important;padding:6px 13px!important;border-radius:10px!important;font-size:14px!important}
+body[data-mobile-build="mobile-v5-20260912"] #dialogue small{font-size:11px!important;margin-top:6px!important;opacity:.45!important}
+body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn{display:block!important;width:100%!important;margin:11px 0 0!important;padding:10px 12px!important;border-radius:12px!important;font-size:14px!important;pointer-events:none!important}
+body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn.ready{pointer-events:auto!important}
+
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen{padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom))!important;background:linear-gradient(#0a3a56,#041c2e 68%,#031522)!important}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayCard{width:min(88vw,340px)!important;max-height:calc(100dvh - 24px)!important;padding:18px 12px 16px!important;border-radius:20px!important;overflow:hidden!important;background:rgba(3,23,37,.94)!important;border:1px solid rgba(151,220,238,.28)!important;box-shadow:0 16px 38px rgba(0,0,0,.35)!important}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayCard h2{font-size:clamp(22px,6.3vw,28px)!important;margin:0 0 4px!important}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(50vw,190px)!important;height:min(50vw,190px)!important;margin:0 auto 2px!important}
+body[data-mobile-build="mobile-v5-20260912"] #rollResult{font-size:16px!important;min-height:1.25em!important;margin-top:1px!important}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayMessage{font-size:clamp(28px,7.5vw,34px)!important;line-height:1!important;letter-spacing:.2px!important;margin:4px auto 0!important;white-space:normal!important}
+body[data-mobile-build="mobile-v5-20260912"] #birthdaySub{font-size:13px!important;margin-top:4px!important}
+body[data-mobile-build="mobile-v5-20260912"] #confettiLayer{z-index:1!important}
+body[data-mobile-build="mobile-v5-20260912"] .confetti{width:4px!important;height:8px!important;opacity:.68!important}
+body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(42vw,160px)!important;height:min(42vw,160px)!important}
+
+@media (max-height:680px){
+  body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(29dvh,205px)!important;top:max(7vh,42px)!important}
+  body[data-mobile-build="mobile-v5-20260912"] #dialogue{font-size:14px!important;padding:24px 13px 12px!important}
+  body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(40vw,150px)!important;height:min(40vw,150px)!important}
+  body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(34vw,130px)!important;height:min(34vw,130px)!important}
 }
 
 </style>
 </head>
-<body data-mobile-build="mobile-v4-20260912">
+<body data-mobile-build="mobile-v5-20260912">
 <div id="shell">
   <div id="seaFloor"></div>
   <canvas id="gameCanvas"></canvas>
@@ -193,7 +241,7 @@ body[data-mobile-build="mobile-v4-20260912"] #birthdayScreen.celebrating #birthd
   </div>
   <div id="toast"></div>
   <div id="touch"><button class="touchBtn" id="leftBtn">◀</button><button class="touchBtn" id="rightBtn">▶</button></div>
-  <div id="startOverlay"><div class="card"><h1>Parto's Ocean Run</h1><p id="introText">Parto! You've woken up as a whale. Avoid the theocracy and the IRGC, publish papers, play TTRPGs, and watch Doctor Who to survive.</p><div class="legend"><span><img src="assets/paper.png"> +1</span><span><img src="assets/dice.png"> +1</span><span><img src="assets/tardis.png"> +1</span><span><img src="assets/moon.png"> lose a heart</span><span><img src="assets/iran_emblem.png"> lose a heart</span></div><p>Swipe left or right, or use the on-screen buttons.</p><button class="btn" id="startBtn">Dive in</button></div></div>
+  <div id="startOverlay"><div class="card"><h1>Parto's Ocean Run</h1><p id="introText">Parto! You've woken up as a whale. Avoid the theocracy and the IRGC, publish papers, play TTRPGs, and watch Doctor Who to survive.</p><div class="legend"><span><img src="assets/paper.png"> +1</span><span><img src="assets/dice.png"> +1</span><span><img src="assets/tardis.png"> +1</span><span><img src="assets/moon.png"> lose a heart</span><span><img src="assets/iran_emblem.png"> lose a heart</span></div><p>Tap the left or right side of the ocean, or swipe.</p><button class="btn" id="startBtn">Dive in</button></div></div>
   <div id="gameOver"><div class="card"><h1 id="gameOverTitle">Out of hearts</h1><p id="gameOverText">The hazards got you this time.</p><button class="btn" id="againBtn">Try again</button></div></div>
   <div id="victory">
     <div id="vnScene">
@@ -345,13 +393,13 @@ addEventListener('resize',resize); resize();
 
 function laneX(i){ return (i+.5)*W/lanes; }
 function whaleState(){
-  const w=Math.min(112,W*.285), h=w*.56;
+  const w=Math.min(88,W*.225), h=w*.56;
   const bob=Math.sin(swimClock*6.2)*5 + Math.sin(swimClock*2.3)*1.5;
   const drift=targetLane-lanePos;
   const tilt=Math.sin(swimClock*6.2)*0.035 + drift*0.07;
   const pulse=1 + collectBoost*0.05;
   const x=laneX(lanePos)-w/2;
-  const y=H-h-Math.max(86,H*.105)+bob;
+  const y=H-h-Math.max(118,H*.145)+bob;
   const turnStretch=1-Math.min(.16,Math.abs(facing)*.16);
   return {x,y,w,h,tilt,pulse,faceScaleX:facing,turnStretch};
 }
@@ -406,7 +454,7 @@ function spawn(){
   const roll=Math.random();
   const type = roll<.28 ? 'paper' : roll<.52 ? 'dice' : roll<.70 ? 'tardis' : roll<.85 ? 'moon' : 'iran_emblem';
   let size = type==='moon' ? 64 : type==='iran_emblem' ? 70 : type==='tardis' ? 66 : 58;
-  if(W<650) size*=.68;
+  if(W<650) size*=.52;
   objects.push({type,lane:Math.floor(Math.random()*lanes),y:-80,size,vy:(125+Math.random()*55)*speedScale,rot:(Math.random()-.5)*.35,vr:(Math.random()-.5)*.9});
 }
 function hit(a,b){ return a.x<b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y; }
@@ -513,7 +561,7 @@ function update(dt){
   spawnClock-=dt;
   if(spawnClock<=0){
     spawn();
-    spawnClock=Math.max(.55,1.02-score*.012)+Math.random()*.30;
+    spawnClock=Math.max(.72,1.18-score*.010)+Math.random()*.34;
   }
 
   const wb=whaleBox();
