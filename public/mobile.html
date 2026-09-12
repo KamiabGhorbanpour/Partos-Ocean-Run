@@ -2,675 +2,492 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#071f33">
 <title>Parto's Ocean Run</title>
 <style>
-:root{--ink:#eefaff;--deep:#05263c;--glass:rgba(1,27,45,.78);--accent:#84e6ff;--gold:#ffd46d}
+:root{
+  --ink:#eefaff;
+  --muted:#bcd9e5;
+  --glass:rgba(5,31,48,.86);
+  --line:rgba(190,237,250,.24);
+  --accent:#bcefff;
+  --gold:#f6df94;
+  --danger:#ffb9b9;
+}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;background:#03131f;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--ink);overflow:hidden}
-body{display:grid;place-items:center}
-#shell{position:relative;width:min(100vw,1100px);height:min(100vh,720px);aspect-ratio:11/7;overflow:hidden;background:linear-gradient(#68d9f2 0%,#1688b6 31%,#07527a 65%,#062d47 100%);box-shadow:0 16px 60px #0009;border:1px solid #9eeeff44}
-#shell:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% -20%,#ffffff66,transparent 45%),linear-gradient(90deg,transparent 49.5%,#ffffff0d 50%,transparent 50.5%);pointer-events:none}
-#seaFloor{position:absolute;left:0;right:0;bottom:0;height:10%;background:linear-gradient(#d8b676,#8d6b45);clip-path:polygon(0 25%,8% 10%,18% 30%,28% 15%,42% 33%,56% 14%,70% 26%,82% 9%,100% 24%,100% 100%,0 100%)}
-#gameCanvas{position:absolute;inset:0;width:100%;height:100%}
-.hud{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;z-index:4;pointer-events:none}
-.pill{background:var(--glass);backdrop-filter:blur(8px);padding:10px 14px;border-radius:16px;border:1px solid #c7f5ff33;box-shadow:0 5px 18px #00131d55;font-weight:700;letter-spacing:.2px}
-#goal{font-size:14px;font-weight:600;opacity:.95;margin-top:6px}.big{font-size:24px;line-height:1}.gold{color:var(--gold)}
-#startOverlay,#gameOver,#victory{position:absolute;inset:0;z-index:10;display:grid;place-items:center;background:linear-gradient(#031d2c88,#02121ad9);backdrop-filter:blur(3px)}
-.card{width:min(88%,540px);padding:28px;border:1px solid #bcf2ff55;border-radius:24px;background:#06273be8;box-shadow:0 20px 60px #0008;text-align:center}
-.card h1{margin:0 0 8px;font-size:clamp(28px,4.5vw,50px)}
-.card p{line-height:1.55;margin:10px auto;max-width:430px;color:#d9f6ff}
-.key{display:inline-block;padding:3px 9px;margin:0 2px;border-radius:8px;background:#d7f7ff;color:#05263c;font-weight:800;box-shadow:inset 0 -2px #76b9c8}
-.btn{pointer-events:auto;cursor:pointer;border:0;border-radius:14px;padding:12px 20px;font-size:16px;font-weight:800;background:#b9f2ff;color:#042235;box-shadow:0 6px 0 #4a9db2;transition:.1s}
-.btn:hover{transform:translateY(-1px)}
-.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #4a9db2}
-.legend{display:flex;justify-content:center;gap:16px;margin:18px 0 20px;flex-wrap:wrap}
-.legend span{display:flex;align-items:center;gap:7px;font-size:14px}
-.legend img{width:38px;height:38px;object-fit:contain}
-#touch{position:absolute;left:18px;right:18px;bottom:15px;display:none;justify-content:space-between;z-index:5}
-.touchBtn{width:82px;height:58px;border:1px solid #d8f8ff55;border-radius:18px;background:#06293fc8;color:#fff;font-size:26px;font-weight:900}
-#victory{display:none;background:linear-gradient(#0b2f49aa,#061a29e8);place-items:stretch}
-#vnScene,#birthdayScreen{position:absolute;inset:0;background:radial-gradient(circle at 72% 25%,#64c8d966,transparent 27%),linear-gradient(#176b87 0%,#0b435f 45%,#062b43 100%);overflow:hidden}
-#vnScene:before,#birthdayScreen:before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 10% 10%,#ffffff16 0 2px,transparent 3px 42px);opacity:.25}
-#kahu{position:absolute;height:min(76%,610px);left:7%;bottom:12%;filter:drop-shadow(0 14px 22px #00151faa);animation:rise .8s ease both}
-@keyframes rise{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
-#dialogue{position:absolute;left:5%;right:5%;bottom:5%;min-height:148px;border-radius:18px;background:#031b2bea;border:2px solid #a7e7f299;box-shadow:0 16px 35px #0008;padding:28px 28px 22px 30%;font-size:clamp(18px,2.3vw,28px);line-height:1.45;cursor:pointer}
-#nameplate{position:absolute;left:26%;top:-24px;background:#d9f8ff;color:#05273a;padding:8px 22px;border-radius:12px;font-weight:900;font-size:18px;box-shadow:0 5px 0 #6bb2c4}
-#dialogue small{display:block;margin-top:13px;font-size:13px;opacity:.55}
-#birthdayScreen{display:none;place-items:center;text-align:center;padding:20px}
-#birthdayCard{position:relative;z-index:1;width:min(92%,760px);padding:24px 28px 34px;border:1px solid #bcf2ff55;border-radius:24px;background:#06273be8;box-shadow:0 20px 60px #0008;text-align:center;overflow:visible}
-#birthdayCard h2{margin:0 0 8px;font-size:clamp(26px,4vw,42px)}
-#birthdayCard p{margin:8px auto 10px;max-width:520px;color:#d9f6ff;line-height:1.5}
-#birthdayDieStage{position:relative;width:min(66vw,400px);height:min(66vw,400px);max-width:400px;max-height:400px;margin:4px auto 8px;display:grid;place-items:center;cursor:pointer;touch-action:manipulation;isolation:isolate;outline:none}
-#birthdayDieStage::before{content:"";position:absolute;inset:7%;border-radius:38% 38% 44% 44%;border:1px solid rgba(218,177,92,.42);background:radial-gradient(circle at 50% 46%,rgba(35,73,118,.34),rgba(15,20,45,.18) 47%,rgba(0,0,0,0) 72%);box-shadow:inset 0 0 55px rgba(5,10,29,.35),0 0 35px rgba(0,0,0,.18);pointer-events:none}
-#birthdayDieStage::after{content:"";position:absolute;inset:13%;border-radius:50%;border:1px solid rgba(83,159,211,.13);box-shadow:0 0 30px rgba(52,164,235,.08);pointer-events:none}
-#d20Canvas{position:relative;z-index:2;width:100%;height:100%;display:block;filter:drop-shadow(0 20px 25px rgba(0,7,18,.42));pointer-events:none}
-#birthdayDieStage:hover #d20Canvas{filter:drop-shadow(0 22px 30px rgba(0,7,18,.5)) brightness(1.05)}
-#birthdayDieStage.rolling{cursor:default}
-#birthdayDieStage.nat20 #d20Canvas{animation:d20VictoryPulse .92s ease both}
-@keyframes d20VictoryPulse{0%{filter:drop-shadow(0 20px 25px rgba(0,7,18,.42)) brightness(1)}42%{filter:drop-shadow(0 0 34px rgba(98,222,255,.9)) drop-shadow(0 0 46px rgba(255,211,105,.56)) brightness(1.2)}100%{filter:drop-shadow(0 20px 25px rgba(0,7,18,.42)) drop-shadow(0 0 18px rgba(98,222,255,.42)) brightness(1.06)}}
-#confettiLayer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}
-.confetti{position:absolute;top:-12%;width:9px;height:18px;border-radius:2px;opacity:.95;animation:confettiFall 2.3s linear forwards}
-@keyframes confettiFall{to{transform:translate3d(var(--drift),120vh,0) rotate(900deg);opacity:.92}}
-#rollResult{margin-top:8px;font-size:clamp(22px,3.5vw,34px);font-weight:900;color:#fff3b1;min-height:1.4em}
-#birthdayMessage{margin-top:8px;font-size:clamp(34px,7vw,74px);font-weight:900;letter-spacing:2px;color:#fff3b1;text-shadow:0 0 18px rgba(255,243,177,.35);display:none}
-#birthdaySub{display:none;font-size:clamp(18px,2.3vw,28px);margin-top:6px}
-#gameOver{display:none}
-#toast{position:absolute;left:50%;top:18%;transform:translate(-50%,-10px);padding:10px 16px;border-radius:14px;background:#022236dc;border:1px solid #b7f1ff55;font-weight:800;opacity:0;transition:.2s;z-index:7;pointer-events:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03131f;color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif;font-weight:400}
+body{touch-action:none;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+button{font:inherit;font-weight:400}
+#app{position:fixed;inset:0;background:linear-gradient(#68d9f2 0%,#1688b6 28%,#07547a 66%,#052b45 100%);overflow:hidden}
+#app:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% -8%,rgba(255,255,255,.42),transparent 34%),linear-gradient(rgba(255,255,255,.04),rgba(255,255,255,0) 24%)}
+#game{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hud{position:absolute;z-index:5;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.hudChip{min-height:38px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(3,25,40,.66);backdrop-filter:blur(8px);display:flex;align-items:center;gap:7px;font-size:15px;box-shadow:0 8px 22px rgba(0,14,25,.18)}
+#hearts{letter-spacing:2px;font-size:17px}
+#progress{font-variant-numeric:tabular-nums}
+#toast{position:absolute;z-index:7;left:50%;top:max(60px,10vh);transform:translate(-50%,-6px);max-width:78vw;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(2,23,37,.84);font-size:13px;text-align:center;opacity:0;transition:.18s ease;pointer-events:none}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-@media (max-width:700px){
-  #shell{width:100vw;height:100vh;aspect-ratio:auto}
-  #touch{display:flex}
-  .hud{top:9px;left:9px;right:9px}
-  .pill{padding:8px 11px}
-  .big{font-size:20px}
-  #goal{display:none}
-  #kahu{height:60%;left:-2%;bottom:20%}
-  #dialogue{left:3%;right:3%;bottom:3%;padding:26px 18px 18px 32%;min-height:160px}
-  #nameplate{left:29%}
-  #birthdayDieStage{width:min(82vw,330px);height:min(82vw,330px)}
-  #birthdayMessage{font-size:clamp(30px,10vw,52px)}
-}
-#scorePill{display:none}
-
-/* Dedicated mobile build v3 */
-html,body{width:100%;height:100%;margin:0;overflow:hidden;overscroll-behavior:none;background:#03131f}
-body{display:block;touch-action:manipulation}
-#shell{width:100vw!important;height:100dvh!important;min-height:100svh!important;aspect-ratio:auto!important;border:0!important;box-shadow:none!important}
-#startOverlay,#gameOver,#victory{width:100%;height:100%;padding:max(10px,env(safe-area-inset-top)) 10px max(10px,env(safe-area-inset-bottom));overflow:hidden}
-#startOverlay{overflow-y:auto;place-items:center}
-#startOverlay .card,#gameOver .card{width:min(94vw,460px);max-height:calc(100dvh - 24px);overflow:auto;padding:20px 17px;border-radius:20px}
-#startOverlay .card h1,#gameOver .card h1{font-size:clamp(30px,9vw,42px);line-height:1.04}
-#startOverlay .card p,#gameOver .card p{font-size:15px;line-height:1.45;margin:9px auto}
-.legend{gap:8px 12px;margin:12px 0 14px}
-.legend span{font-size:13px}
-.legend img{width:32px;height:32px}
-.btn{padding:11px 19px;font-size:16px}
-
-/* HUD: only hearts, tucked into the safe area. */
-.hud{top:max(8px,env(safe-area-inset-top));left:auto;right:9px;display:block;z-index:7}
-.hud .pill{padding:8px 10px;border-radius:13px;background:rgba(1,27,45,.70)}
-.hud .big{font-size:18px;letter-spacing:1px}
-#scorePill{display:none!important}
-
-/* Phone controls: large enough to hit, but kept out of the playfield. */
-#touch{display:flex!important;left:14px;right:14px;bottom:max(16px,env(safe-area-inset-bottom));z-index:8;align-items:flex-end}
-.touchBtn{width:64px;height:64px;border-radius:50%;border:1px solid rgba(216,248,255,.35);background:rgba(4,38,59,.78);backdrop-filter:blur(7px);font-size:25px;box-shadow:0 8px 18px rgba(0,12,22,.28)}
-.touchBtn:active{transform:scale(.94);background:rgba(9,56,82,.9)}
-#toast{top:max(70px,11%);font-size:14px;padding:8px 12px}
-
-/* Kahu gets a proper portrait VN layout instead of the desktop box squeezed onto a phone. */
-#vnScene{inset:0;padding:0;overflow:hidden;background:radial-gradient(circle at 50% 19%,rgba(100,200,217,.38),transparent 31%),linear-gradient(#176b87 0%,#0b435f 46%,#062b43 100%)}
-#kahu{height:min(49dvh,410px);max-width:88vw;width:auto;left:50%;bottom:min(33dvh,280px);transform:translateX(-50%);object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,15,25,.58));animation:riseMobile .8s ease both}
-@keyframes riseMobile{from{transform:translate(-50%,24px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
-#dialogue{left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));min-height:0;padding:26px 16px 14px;border-radius:17px;background:rgba(3,27,43,.94);border:1px solid rgba(167,231,242,.58);font-size:18px;line-height:1.42;text-align:left;cursor:default;box-shadow:0 14px 28px rgba(0,0,0,.35);pointer-events:none}
-#nameplate{left:14px;top:-19px;padding:7px 15px;border-radius:10px;font-size:15px;box-shadow:0 4px 0 #6bb2c4}
-#dialogue small{display:block;margin-top:8px;font-size:12px;opacity:.58}
-#kahuContinueBtn{display:block;width:100%;margin:12px 0 0;padding:11px 14px;border:0;border-radius:12px;background:#d9f8ff;color:#05273a;font-size:16px;font-weight:700;box-shadow:0 4px 0 #6bb2c4;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(6px);transition:opacity .22s ease,transform .22s ease,visibility 0s linear .22s}
-#kahuContinueBtn.ready{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition-delay:0s;pointer-events:auto}
-#kahuContinueBtn:active{transform:translateY(2px);box-shadow:0 2px 0 #6bb2c4}
-#kahuContinueBtn{pointer-events:none}
-#kahuContinueBtn.ready{pointer-events:auto}
-
-/* Birthday screen: clean vertical stack, all inside the viewport. */
-#birthdayScreen{inset:0;padding:max(12px,env(safe-area-inset-top)) 10px max(12px,env(safe-area-inset-bottom));place-items:center;overflow:hidden}
-#birthdayCard{width:min(94vw,390px);max-height:calc(100dvh - 24px);padding:18px 14px 16px;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,39,59,.94)}
-#birthdayCard h2{font-size:clamp(26px,8vw,34px);line-height:1.05;margin:0 0 4px}
-#birthdayCard p{display:none!important;margin:0}
-#birthdayDieStage{width:min(62vw,250px);height:min(62vw,250px);margin:0 auto 2px;flex:0 0 auto}
-#rollResult{margin-top:2px;min-height:1.2em;font-size:clamp(19px,5.2vw,24px)}
-#birthdayMessage{margin-top:4px;font-size:clamp(29px,8.8vw,42px);line-height:1;letter-spacing:.5px;white-space:nowrap;max-width:100%}
-#birthdaySub{font-size:clamp(15px,4.5vw,19px);margin-top:4px}
-.confetti{width:6px;height:12px}
-
+#gestureHint{position:absolute;z-index:4;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);padding:7px 12px;border-radius:999px;background:rgba(2,23,37,.52);border:1px solid rgba(198,241,252,.16);font-size:12px;color:#d8f4fb;pointer-events:none;transition:opacity .35s ease;white-space:nowrap}
+.overlay{position:absolute;z-index:20;inset:0;display:none}
+.overlay.active{display:flex}
+#startScreen{align-items:flex-end;justify-content:center;padding:0 12px max(14px,env(safe-area-inset-bottom));background:linear-gradient(rgba(3,23,37,.12),rgba(3,18,29,.86) 54%,rgba(3,18,29,.98))}
+.startSheet{width:min(100%,440px);border:1px solid var(--line);border-radius:28px;background:rgba(4,30,47,.94);backdrop-filter:blur(12px);padding:22px 18px 18px;box-shadow:0 26px 60px rgba(0,8,14,.35)}
+.startWhale{display:block;width:min(46vw,180px);height:auto;margin:-72px auto 6px;filter:drop-shadow(0 16px 22px rgba(0,12,20,.38))}
+h1{font-size:clamp(29px,8.5vw,38px);line-height:1.05;font-weight:500;text-align:center;margin:0 0 11px}
+.intro{margin:0 auto 15px;max-width:370px;text-align:center;color:#d9f2f9;font-size:14px;line-height:1.48}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 16px}
+.legendItem{min-width:0;display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06);font-size:12.5px;color:#e5f7fb}
+.legendItem img{width:34px;height:34px;object-fit:contain;flex:0 0 auto}
+.primary{width:100%;border:0;border-radius:17px;padding:14px 16px;background:#d8f7ff;color:#042235;font-size:16px;box-shadow:0 5px 0 #6ba9bb;cursor:pointer}
+.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #6ba9bb}
+.controlsCopy{text-align:center;font-size:12px;color:var(--muted);margin:10px 0 0}
+#gameOver{align-items:center;justify-content:center;padding:18px;background:rgba(2,16,26,.88);backdrop-filter:blur(6px)}
+.gameOverCard{width:min(92vw,380px);padding:24px 18px;border-radius:24px;background:rgba(5,31,48,.96);border:1px solid var(--line);text-align:center}
+.gameOverCard h2{font-size:30px;font-weight:500;margin:0 0 8px}
+.gameOverCard p{color:var(--muted);font-size:14px;line-height:1.45;margin:0 0 16px}
+#vnScreen{background:linear-gradient(#2d9ab5 0%,#14627f 48%,#06283e 100%);align-items:stretch;justify-content:stretch;overflow:hidden}
+#vnScreen:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 18%,rgba(205,250,255,.34),transparent 26%),radial-gradient(circle at 20% 55%,rgba(255,255,255,.08),transparent 24%);pointer-events:none}
+.kahuStage{position:absolute;left:0;right:0;top:max(18px,env(safe-area-inset-top));bottom:34%;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+#kahu{height:min(62vh,520px);max-width:90vw;object-fit:contain;filter:drop-shadow(0 18px 28px rgba(0,13,22,.45));animation:kahuIn .55s ease both}
+@keyframes kahuIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.dialogueSheet{position:absolute;z-index:2;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));padding:25px 16px 15px;border-radius:24px;background:rgba(3,23,37,.96);border:1px solid rgba(200,241,251,.28);box-shadow:0 22px 50px rgba(0,8,14,.4)}
+.nameTag{position:absolute;left:16px;top:-16px;padding:6px 13px;border-radius:999px;background:#d8f7ff;color:#05283a;font-size:14px}
+.dialogueText{font-size:17px;line-height:1.45;color:#eefaff;margin:0}
+#continueBtn{margin-top:14px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease}
+#continueBtn.ready{opacity:1;visibility:visible;pointer-events:auto}
+#birthdayScreen{background:radial-gradient(circle at 50% 36%,#174f72 0%,#092b43 45%,#031421 100%);align-items:center;justify-content:center;text-align:center;padding:max(18px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom));overflow:hidden}
+.birthdayCard{position:relative;z-index:2;width:min(94vw,410px);padding:20px 16px 18px;border-radius:28px;background:rgba(3,24,40,.78);border:1px solid rgba(181,231,244,.22);box-shadow:0 30px 70px rgba(0,6,12,.34)}
+.birthdayCard h2{font-size:25px;font-weight:400;margin:0 0 2px;color:#e8faff}
+#dieButton{position:relative;width:min(72vw,300px);height:min(72vw,300px);margin:2px auto 0;border:0;background:transparent;padding:0;cursor:pointer;perspective:700px}
+#d20{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 28px rgba(0,5,12,.38));transform-style:preserve-3d}
+#dieButton.rolling #d20{animation:rollDie 1.45s cubic-bezier(.2,.7,.2,1)}
+@keyframes rollDie{0%{transform:rotate(0deg) rotateY(0) scale(.92)}30%{transform:rotate(160deg) rotateY(240deg) scale(1.06)}62%{transform:rotate(410deg) rotateY(520deg) scale(.96)}100%{transform:rotate(720deg) rotateY(720deg) scale(1)}}
+#nat20{position:absolute;inset:0;display:grid;place-items:center;font-family:Georgia,'Times New Roman',serif;font-size:clamp(58px,18vw,86px);color:#2b1908;text-shadow:0 1px 0 #ffe8a5;opacity:0;pointer-events:none}
+#dieButton.done #nat20{opacity:1;animation:pop20 .35s ease both}
+@keyframes pop20{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+#birthdayMessage{display:none;margin:2px 0 0;font-size:clamp(34px,10vw,48px);line-height:.98;font-weight:500;letter-spacing:.4px;color:var(--gold);text-shadow:0 0 22px rgba(246,223,148,.22)}
+#birthdayMessage.show{display:block;animation:messageIn .5s ease both}
+@keyframes messageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.confettiPiece{position:absolute;top:-10vh;width:7px;height:13px;border-radius:2px;animation:fall var(--dur) linear forwards;opacity:.9}
+@keyframes fall{to{transform:translate3d(var(--drift),115vh,0) rotate(840deg)}}
 @media (max-height:700px){
-  #kahu{height:min(43dvh,315px);bottom:34dvh}
-  #dialogue{font-size:16px;padding:23px 14px 12px}
-  #kahuContinueBtn{margin-top:9px;padding:9px 12px}
-  #birthdayDieStage{width:min(48vw,205px);height:min(48vw,205px)}
+  .startSheet{padding-top:18px}
+  .startWhale{width:min(38vw,145px);margin-top:-58px}
+  .intro{font-size:13px;margin-bottom:10px}
+  .legend{margin:9px 0 12px}
+  .legendItem{padding:6px 8px}
+  .legendItem img{width:29px;height:29px}
+  #kahu{height:min(54vh,390px)}
+  .dialogueText{font-size:15px}
+  #dieButton{width:min(52vw,220px);height:min(52vw,220px)}
+  #birthdayMessage{font-size:clamp(30px,8.5vw,40px)}
 }
-
-
-/* Mobile build v4: portrait-first cleanup */
-body[data-mobile-build="mobile-v5-20260912"] #shell:before{background:radial-gradient(circle at 50% -16%,rgba(255,255,255,.27),transparent 36%);opacity:.75}
-body[data-mobile-build="mobile-v5-20260912"] #touch{display:none!important}
-body[data-mobile-build="mobile-v5-20260912"] #seaFloor{height:7%;opacity:.86}
-body[data-mobile-build="mobile-v5-20260912"] .hud{top:max(10px,env(safe-area-inset-top));right:10px}
-body[data-mobile-build="mobile-v5-20260912"] .hud .pill{padding:7px 9px;border-radius:999px;background:rgba(0,27,44,.64);box-shadow:0 5px 16px rgba(0,10,18,.22)}
-body[data-mobile-build="mobile-v5-20260912"] .hud .big{font-size:17px}
-body[data-mobile-build="mobile-v5-20260912"] #toast{top:max(58px,8%);max-width:78vw;text-align:center;font-size:13px}
-
-/* Start screen is a compact phone card rather than a shrunk desktop modal. */
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay{padding:max(16px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom));background:linear-gradient(rgba(3,29,44,.5),rgba(2,18,26,.9))}
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card{width:min(92vw,410px);max-height:calc(100dvh - 32px);padding:22px 18px 20px;border-radius:22px;background:rgba(5,35,53,.94)}
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card h1{font-size:clamp(29px,8.5vw,39px);margin-bottom:10px}
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card p{font-size:14.5px;line-height:1.42}
-body[data-mobile-build="mobile-v5-20260912"] .legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
-body[data-mobile-build="mobile-v5-20260912"] .legend span{justify-content:flex-start;padding:7px 8px;border-radius:12px;background:rgba(255,255,255,.045);font-size:12.5px}
-body[data-mobile-build="mobile-v5-20260912"] .legend img{width:30px;height:30px}
-
-/* Kahu: image occupies its own clean upper field; dialogue is a fixed lower sheet. */
-body[data-mobile-build="mobile-v5-20260912"] #vnScene{background:radial-gradient(circle at 50% 18%,rgba(107,215,229,.38),transparent 29%),linear-gradient(#14657f 0%,#0b445f 48%,#05263c 100%)}
-body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(46dvh,390px);max-width:82vw;left:50%;bottom:42dvh;transform:translateX(-50%);object-fit:contain}
-body[data-mobile-build="mobile-v5-20260912"] #dialogue{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));padding:28px 17px 16px;border-radius:20px;font-size:17px;line-height:1.4;background:rgba(2,22,36,.96);border:1px solid rgba(178,235,245,.5);box-shadow:0 16px 35px rgba(0,0,0,.34);pointer-events:none}
-body[data-mobile-build="mobile-v5-20260912"] #nameplate{left:16px;top:-18px;font-size:15px;padding:7px 15px}
-body[data-mobile-build="mobile-v5-20260912"] #dialogue small{margin-top:7px;font-size:11.5px;opacity:.48}
-body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn{margin-top:13px;padding:12px 14px;border-radius:13px;font-size:15px;font-weight:650;pointer-events:none}
-body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn.ready{pointer-events:auto}
-
-/* Birthday: one contained card; confetti stays behind the content and nothing can overflow the phone. */
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen{padding:max(14px,env(safe-area-inset-top)) 12px max(14px,env(safe-area-inset-bottom));background:radial-gradient(circle at 50% 38%,rgba(42,115,164,.25),transparent 43%),linear-gradient(#0b3d59,#041d31 64%,#031625)}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayCard{z-index:3;width:min(91vw,380px);max-height:calc(100dvh - 28px);padding:22px 14px 18px;border-radius:24px;overflow:hidden;background:rgba(3,24,40,.92);border:1px solid rgba(146,219,239,.32);box-shadow:0 20px 50px rgba(0,0,0,.38)}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayCard h2{font-size:clamp(25px,7vw,32px);margin:0 0 8px}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(66vw,270px);height:min(66vw,270px);margin:2px auto 4px}
-body[data-mobile-build="mobile-v5-20260912"] #rollResult{font-size:clamp(17px,4.8vw,21px);min-height:1.3em;margin-top:3px}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayMessage{font-size:clamp(30px,8vw,38px);line-height:1.02;letter-spacing:.2px;white-space:normal;width:100%;margin:6px auto 0;overflow-wrap:normal}
-body[data-mobile-build="mobile-v5-20260912"] #birthdaySub{font-size:15px;margin-top:5px}
-body[data-mobile-build="mobile-v5-20260912"] #confettiLayer{z-index:1}
-body[data-mobile-build="mobile-v5-20260912"] .confetti{width:5px;height:10px;opacity:.72}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayCard h2{font-size:22px;opacity:.7;margin-bottom:2px}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(50vw,205px);height:min(50vw,205px);transition:width .35s ease,height .35s ease}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #rollResult{font-size:17px}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayMessage{font-size:clamp(31px,8.4vw,40px)}
-
-@media (max-height:720px){
- body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(40dvh,285px);bottom:45dvh}
- body[data-mobile-build="mobile-v5-20260912"] #dialogue{font-size:15.5px;padding:25px 14px 13px}
- body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn{padding:10px 12px;margin-top:9px}
- body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(47vw,190px);height:min(47vw,190px)}
- body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(39vw,160px);height:min(39vw,160px)}
-}
-
-
-/* Mobile build v5: phone-only rewrite. Desktop file is untouched. */
-body[data-mobile-build="mobile-v5-20260912"]{background:#052238!important}
-body[data-mobile-build="mobile-v5-20260912"] #shell{width:100vw!important;height:100dvh!important;min-height:100svh!important;background:linear-gradient(#59c9e7 0%,#1382ae 31%,#07557c 66%,#052f49 100%)!important}
-body[data-mobile-build="mobile-v5-20260912"] #shell:before{background:radial-gradient(circle at 50% -8%,rgba(255,255,255,.28),transparent 33%)!important;opacity:.9!important}
-body[data-mobile-build="mobile-v5-20260912"] #seaFloor{height:5.5%!important;opacity:.75!important}
-body[data-mobile-build="mobile-v5-20260912"] #touch{display:none!important}
-body[data-mobile-build="mobile-v5-20260912"] .hud{top:max(12px,env(safe-area-inset-top))!important;left:auto!important;right:12px!important;display:block!important}
-body[data-mobile-build="mobile-v5-20260912"] .hud .pill{padding:6px 9px!important;border-radius:999px!important;background:rgba(2,29,46,.58)!important;border:1px solid rgba(214,248,255,.22)!important;box-shadow:none!important}
-body[data-mobile-build="mobile-v5-20260912"] .hud .big{font-size:16px!important;line-height:1!important}
-body[data-mobile-build="mobile-v5-20260912"] #scorePill{display:none!important}
-body[data-mobile-build="mobile-v5-20260912"] #toast{top:max(54px,7%)!important;max-width:76vw!important;font-size:12px!important;padding:7px 10px!important;border-radius:999px!important;background:rgba(2,28,44,.8)!important}
-
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay{padding:max(18px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom))!important;background:linear-gradient(rgba(3,27,42,.28),rgba(2,18,29,.82))!important;overflow:hidden!important}
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card{width:min(90vw,390px)!important;max-height:calc(100dvh - 38px)!important;overflow:hidden!important;padding:20px 16px 18px!important;border-radius:20px!important;background:rgba(4,31,48,.94)!important;border:1px solid rgba(193,241,250,.33)!important;box-shadow:0 18px 44px rgba(0,9,18,.35)!important}
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card h1{font-size:clamp(27px,7.8vw,36px)!important;line-height:1.02!important;margin:0 0 8px!important}
-body[data-mobile-build="mobile-v5-20260912"] #startOverlay .card p{font-size:13.5px!important;line-height:1.36!important;margin:8px auto!important}
-body[data-mobile-build="mobile-v5-20260912"] .legend{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin:12px 0!important}
-body[data-mobile-build="mobile-v5-20260912"] .legend span{min-width:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;padding:7px 3px!important;border-radius:12px!important;background:rgba(255,255,255,.05)!important;font-size:11px!important}
-body[data-mobile-build="mobile-v5-20260912"] .legend img{width:26px!important;height:26px!important}
-body[data-mobile-build="mobile-v5-20260912"] #startBtn{width:100%!important;margin-top:2px!important;padding:11px 16px!important;border-radius:13px!important;font-size:15px!important}
-
-body[data-mobile-build="mobile-v5-20260912"] #vnScene{background:linear-gradient(#17667f 0%,#0a435e 52%,#05283f 100%)!important}
-body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(34dvh,270px)!important;max-width:76vw!important;width:auto!important;left:50%!important;top:max(8vh,58px)!important;bottom:auto!important;transform:translateX(-50%)!important;object-fit:contain!important}
-body[data-mobile-build="mobile-v5-20260912"] #dialogue{left:14px!important;right:14px!important;bottom:max(16px,env(safe-area-inset-bottom))!important;min-height:0!important;padding:28px 16px 15px!important;border-radius:18px!important;font-size:16px!important;line-height:1.38!important;background:rgba(2,21,34,.96)!important;border:1px solid rgba(184,234,244,.48)!important;box-shadow:0 14px 30px rgba(0,0,0,.32)!important;pointer-events:none!important}
-body[data-mobile-build="mobile-v5-20260912"] #nameplate{left:14px!important;top:-17px!important;padding:6px 13px!important;border-radius:10px!important;font-size:14px!important}
-body[data-mobile-build="mobile-v5-20260912"] #dialogue small{font-size:11px!important;margin-top:6px!important;opacity:.45!important}
-body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn{display:block!important;width:100%!important;margin:11px 0 0!important;padding:10px 12px!important;border-radius:12px!important;font-size:14px!important;pointer-events:none!important}
-body[data-mobile-build="mobile-v5-20260912"] #kahuContinueBtn.ready{pointer-events:auto!important}
-
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen{padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom))!important;background:linear-gradient(#0a3a56,#041c2e 68%,#031522)!important}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayCard{width:min(88vw,340px)!important;max-height:calc(100dvh - 24px)!important;padding:18px 12px 16px!important;border-radius:20px!important;overflow:hidden!important;background:rgba(3,23,37,.94)!important;border:1px solid rgba(151,220,238,.28)!important;box-shadow:0 16px 38px rgba(0,0,0,.35)!important}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayCard h2{font-size:clamp(22px,6.3vw,28px)!important;margin:0 0 4px!important}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(50vw,190px)!important;height:min(50vw,190px)!important;margin:0 auto 2px!important}
-body[data-mobile-build="mobile-v5-20260912"] #rollResult{font-size:16px!important;min-height:1.25em!important;margin-top:1px!important}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayMessage{font-size:clamp(28px,7.5vw,34px)!important;line-height:1!important;letter-spacing:.2px!important;margin:4px auto 0!important;white-space:normal!important}
-body[data-mobile-build="mobile-v5-20260912"] #birthdaySub{font-size:13px!important;margin-top:4px!important}
-body[data-mobile-build="mobile-v5-20260912"] #confettiLayer{z-index:1!important}
-body[data-mobile-build="mobile-v5-20260912"] .confetti{width:4px!important;height:8px!important;opacity:.68!important}
-body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(42vw,160px)!important;height:min(42vw,160px)!important}
-
-@media (max-height:680px){
-  body[data-mobile-build="mobile-v5-20260912"] #kahu{height:min(29dvh,205px)!important;top:max(7vh,42px)!important}
-  body[data-mobile-build="mobile-v5-20260912"] #dialogue{font-size:14px!important;padding:24px 13px 12px!important}
-  body[data-mobile-build="mobile-v5-20260912"] #birthdayDieStage{width:min(40vw,150px)!important;height:min(40vw,150px)!important}
-  body[data-mobile-build="mobile-v5-20260912"] #birthdayScreen.celebrating #birthdayDieStage{width:min(34vw,130px)!important;height:min(34vw,130px)!important}
-}
-
 </style>
 </head>
-<body data-mobile-build="mobile-v5-20260912">
-<div id="shell">
-  <div id="seaFloor"></div>
-  <canvas id="gameCanvas"></canvas>
-  <div class="hud">
-    <div class="pill" id="scorePill"><div class="big">Collected: <span class="gold" id="score">0 / 15</span></div><div id="goal">Catch papers, d20s, and TARDIS boxes. Dodge theocracy and the IRGC.</div></div>
-    <div class="pill"><div class="big" id="lives">♥ ♥ ♥</div></div>
+<body data-mobile-build="mobile-v6-native-20260912">
+<div id="app">
+  <canvas id="game" aria-label="Parto's Ocean Run game"></canvas>
+  <div id="hud">
+    <div class="hudChip"><span id="hearts">♥ ♥ ♥</span></div>
+    <div class="hudChip"><span id="progress">0 / 15</span></div>
   </div>
   <div id="toast"></div>
-  <div id="touch"><button class="touchBtn" id="leftBtn">◀</button><button class="touchBtn" id="rightBtn">▶</button></div>
-  <div id="startOverlay"><div class="card"><h1>Parto's Ocean Run</h1><p id="introText">Parto! You've woken up as a whale. Avoid the theocracy and the IRGC, publish papers, play TTRPGs, and watch Doctor Who to survive.</p><div class="legend"><span><img src="assets/paper.png"> +1</span><span><img src="assets/dice.png"> +1</span><span><img src="assets/tardis.png"> +1</span><span><img src="assets/moon.png"> lose a heart</span><span><img src="assets/iran_emblem.png"> lose a heart</span></div><p>Tap the left or right side of the ocean, or swipe.</p><button class="btn" id="startBtn">Dive in</button></div></div>
-  <div id="gameOver"><div class="card"><h1 id="gameOverTitle">Out of hearts</h1><p id="gameOverText">The hazards got you this time.</p><button class="btn" id="againBtn">Try again</button></div></div>
-  <div id="victory">
-    <div id="vnScene">
-      <img id="kahu" src="assets/kahu.png" alt="Kahu">
-      <div id="dialogue">
-        <div id="nameplate">Kahu</div>
-        <span id="kahuText">Thank you for playing, Parto. I hope we have a wonderful journey together.</span>
-        <small id="kahuContinue">Tap Continue when you're ready.</small>
-        <button id="kahuContinueBtn" type="button">Continue</button>
+  <div id="gestureHint">Drag Parto left and right</div>
+
+  <section id="startScreen" class="overlay active">
+    <div class="startSheet">
+      <img class="startWhale" src="assets/whale.png" alt="Parto the whale">
+      <h1>Parto's Ocean Run</h1>
+      <p class="intro">Parto! You've woken up as a whale. Avoid the theocracy and the IRGC, publish papers, play TTRPGs, and watch Doctor Who to survive.</p>
+      <div class="legend">
+        <div class="legendItem"><img src="assets/paper.png" alt="Paper"><span>Publish papers</span></div>
+        <div class="legendItem"><img src="assets/dice.png" alt="D20"><span>Play TTRPGs</span></div>
+        <div class="legendItem"><img src="assets/tardis.png" alt="TARDIS"><span>Watch Doctor Who</span></div>
+        <div class="legendItem"><img src="assets/moon.png" alt="Theocracy"><span>Avoid theocracy</span></div>
       </div>
+      <button id="startBtn" class="primary" type="button">Start swimming</button>
+      <p class="controlsCopy">Move by dragging anywhere on the ocean.</p>
     </div>
-    <div id="birthdayScreen">
-      <div id="birthdayCard">
-        <h2 id="birthdayPromptTitle">One more thing...</h2>
-        <p id="birthdayPromptText"></p>
-        <div id="birthdayDieStage" role="button" tabindex="0" aria-label="Roll the giant d20">
-          <canvas id="d20Canvas" width="520" height="520" aria-hidden="true"></canvas>
-        </div>
-        <div id="rollResult"></div>
-        <div id="birthdayMessage">HAPPY BIRTHDAY!</div>
-        <div id="birthdaySub">Natural 20.</div>
-      </div>
-      <div id="confettiLayer"></div>
+  </section>
+
+  <section id="gameOver" class="overlay">
+    <div class="gameOverCard">
+      <h2>Parto sank.</h2>
+      <p>Try again. Collect fifteen good things before the hazards get you.</p>
+      <button id="retryBtn" class="primary" type="button">Try again</button>
     </div>
-  </div>
-  <div style="display:none"><img id="img-whale" src="assets/whale.png"><img id="img-paper" src="assets/paper.png"><img id="img-dice" src="assets/dice.png"><img id="img-tardis" src="assets/tardis.png"><img id="img-moon" src="assets/moon.png"><img id="img-iran_emblem" src="assets/iran_emblem.png"></div>
+  </section>
+
+  <section id="vnScreen" class="overlay" aria-live="polite">
+    <div class="kahuStage"><img id="kahu" src="assets/kahu.png" alt="Kahu"></div>
+    <div class="dialogueSheet">
+      <div class="nameTag">Kahu</div>
+      <p class="dialogueText">Thank you for playing, Parto. I hope we have a wonderful journey together.</p>
+      <button id="continueBtn" class="primary" type="button">Continue</button>
+    </div>
+  </section>
+
+  <section id="birthdayScreen" class="overlay">
+    <div id="confetti"></div>
+    <div class="birthdayCard">
+      <h2>One last roll.</h2>
+      <button id="dieButton" type="button" aria-label="Roll the d20">
+        <img id="d20" src="assets/birthday_d20.svg" alt="Twenty-sided die">
+        <span id="nat20">20</span>
+      </button>
+      <div id="birthdayMessage">HAPPY BIRTHDAY</div>
+    </div>
+  </section>
 </div>
-<script src="text.js"></script>
 <script>
-const canvas=document.getElementById('gameCanvas'), ctx=canvas.getContext('2d');
-const shell=document.getElementById('shell');
-const imgs={};
-for(const n of ['whale','paper','dice','tardis','moon','iran_emblem']) imgs[n]=document.getElementById('img-'+n);
+(() => {
+  'use strict';
 
-let W=1100,H=700,running=false,score=0,lives=3,last=0,spawnClock=0,speedScale=1;
-const lanes=5;
-let lanePos=2,targetLane=2,swimClock=0,collectBoost=0;
-let facing=1,targetFacing=1;
-let victoryStep='kahu';
-const objects=[],bubbles=[],effects=[];
-const vnScene=document.getElementById('vnScene');
-const birthdayScreen=document.getElementById('birthdayScreen');
-const birthdayDieStage=document.getElementById('birthdayDieStage');
-const d20Canvas=document.getElementById('d20Canvas');
-const rollResult=document.getElementById('rollResult');
-const birthdayMessage=document.getElementById('birthdayMessage');
-const birthdaySub=document.getElementById('birthdaySub');
-const kahuContinueBtn=document.getElementById('kahuContinueBtn');
-let kahuUnlockTimer=null;
-let kahuReadyAt=Infinity;
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const startScreen = document.getElementById('startScreen');
+  const gameOver = document.getElementById('gameOver');
+  const vnScreen = document.getElementById('vnScreen');
+  const birthdayScreen = document.getElementById('birthdayScreen');
+  const heartsEl = document.getElementById('hearts');
+  const progressEl = document.getElementById('progress');
+  const toastEl = document.getElementById('toast');
+  const gestureHint = document.getElementById('gestureHint');
+  const startBtn = document.getElementById('startBtn');
+  const retryBtn = document.getElementById('retryBtn');
+  const continueBtn = document.getElementById('continueBtn');
+  const dieButton = document.getElementById('dieButton');
+  const birthdayMessage = document.getElementById('birthdayMessage');
+  const confetti = document.getElementById('confetti');
 
-function createD20Renderer(canvas){
-  const c=canvas, g=c.getContext('2d');
-  const PHI=(1+Math.sqrt(5))/2;
-  const raw=[[-1,PHI,0],[1,PHI,0],[-1,-PHI,0],[1,-PHI,0],[0,-1,PHI],[0,1,PHI],[0,-1,-PHI],[0,1,-PHI],[PHI,0,-1],[PHI,0,1],[-PHI,0,-1],[-PHI,0,1]];
-  const verts=raw.map(v=>norm(v));
-  const faces=[[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
-  const nums=[20,8,14,5,11,2,17,7,13,4,16,9,1,18,6,12,3,15,10,19];
-  const faceNormals=faces.map(f=>faceNormal(f));
-  const targetQ=targetForFace(0);
-  let q=qnorm(qmul(qaxis([0,1,0],.78),qaxis([1,0,0],-.44)));
-  let mode='idle', rollStart=0, rollDur=2480, startQ=q, settleQ=q;
-  let ox=0, oy=0, scale=1, lastTime=performance.now(), idleT=0;
-  const particles=[];
-  let raf=0, visible=true;
-
-  function norm(v){const l=Math.hypot(v[0],v[1],v[2])||1;return [v[0]/l,v[1]/l,v[2]/l]}
-  function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]}
-  function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
-  function add(a,b){return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]}
-  function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]}
-  function faceNormal(f){const a=verts[f[0]],b=verts[f[1]],cc=verts[f[2]];let n=norm(cross(sub(b,a),sub(cc,a)));const cent=norm(add(add(a,b),cc));if(dot(n,cent)<0)n=[-n[0],-n[1],-n[2]];return n}
-  function qnorm(a){const l=Math.hypot(a[0],a[1],a[2],a[3])||1;return a.map(x=>x/l)}
-  function qmul(a,b){return [a[3]*b[0]+a[0]*b[3]+a[1]*b[2]-a[2]*b[1],a[3]*b[1]-a[0]*b[2]+a[1]*b[3]+a[2]*b[0],a[3]*b[2]+a[0]*b[1]-a[1]*b[0]+a[2]*b[3],a[3]*b[3]-a[0]*b[0]-a[1]*b[1]-a[2]*b[2]]}
-  function qaxis(axis,ang){const n=norm(axis),s=Math.sin(ang/2);return [n[0]*s,n[1]*s,n[2]*s,Math.cos(ang/2)]}
-  function qrot(qq,v){const u=[qq[0],qq[1],qq[2]],s=qq[3],uv=cross(u,v),uuv=cross(u,uv);return [v[0]+2*(s*uv[0]+uuv[0]),v[1]+2*(s*uv[1]+uuv[1]),v[2]+2*(s*uv[2]+uuv[2])]}
-  function qfromTo(a,b){a=norm(a);b=norm(b);const d=dot(a,b);if(d<-0.9999){let ax=cross(a,[1,0,0]);if(Math.hypot(...ax)<.01)ax=cross(a,[0,1,0]);return qaxis(ax,Math.PI)}const cr=cross(a,b);return qnorm([cr[0],cr[1],cr[2],1+d])}
-  function qslerp(a,b,t){let cos=a[0]*b[0]+a[1]*b[1]+a[2]*b[2]+a[3]*b[3],bb=b;if(cos<0){cos=-cos;bb=b.map(x=>-x)}if(cos>.9995)return qnorm(a.map((x,i)=>x+(bb[i]-x)*t));const th=Math.acos(Math.max(-1,Math.min(1,cos))),s=Math.sin(th);const w1=Math.sin((1-t)*th)/s,w2=Math.sin(t*th)/s;return a.map((x,i)=>x*w1+bb[i]*w2)}
-  function targetForFace(fi){const f=faces[fi],n=faceNormals[fi];let qa=qfromTo(n,[0,0,1]);const rv=f.map(ix=>qrot(qa,verts[ix]));const cen=rv.reduce((p,v)=>add(p,v),[0,0,0]).map(x=>x/3);const vec=sub(rv[0],cen);const ang=Math.atan2(vec[1],vec[0]);const qz=qaxis([0,0,1],-Math.PI/2-ang);return qnorm(qmul(qz,qa))}
-  function easeOut(t){return 1-Math.pow(1-t,3)}
-  function smooth(t){return t*t*(3-2*t)}
-  function resize(){const r=c.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.max(1,Math.round(r.width*dpr)),h=Math.max(1,Math.round(r.height*dpr));if(c.width!==w||c.height!==h){c.width=w;c.height=h;g.setTransform(dpr,0,0,dpr,0,0)}}
-  function project(v,w,h){const cam=4.2,p=cam/(cam-v[2]*.92);const m=Math.min(w,h)*.285*scale;return [w/2+ox+v[0]*m*p,h/2+oy-v[1]*m*p,v[2],p]}
-  function colorFor(light,z){const l=Math.max(0,light);const r=Math.round(10+22*l),gg=Math.round(74+85*l),b=Math.round(145+95*l),a=.72+Math.max(0,z)*.08;return `rgba(${r},${gg},${b},${a})`}
-  function spawnSpark(strength=1){const count=mode==='rolling'?2:1;for(let i=0;i<count;i++)particles.push({x:ox+(Math.random()-.5)*110,y:oy+95+Math.random()*20,vx:(Math.random()-.5)*45*strength,vy:-35-Math.random()*70*strength,life:.45+Math.random()*.45,max:.75+Math.random()*.4,r:1+Math.random()*2.6,gold:Math.random()<.58})}
-  function stepParticles(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=70*dt;if(p.life<=0)particles.splice(i,1)}}
-  function drawParticles(w,h){g.save();g.globalCompositeOperation='lighter';for(const p of particles){const a=Math.max(0,p.life/p.max);g.globalAlpha=a*.8;g.fillStyle=p.gold?'#f4cf73':'#75ddff';g.shadowColor=g.fillStyle;g.shadowBlur=9;g.beginPath();g.arc(w/2+p.x,h/2+p.y,p.r,0,Math.PI*2);g.fill()}g.restore()}
-  function render(){resize();const dpr=Math.min(2,window.devicePixelRatio||1),w=c.width/dpr,h=c.height/dpr;g.clearRect(0,0,w,h);
-    // ground shadow
-    const shY=h/2+118+Math.max(0,oy*.25),shadowScale=Math.max(.42,1-(-oy/155)*.38);g.save();g.translate(w/2+ox*.3,shY);g.scale(shadowScale,1);const gr=g.createRadialGradient(0,0,6,0,0,95);gr.addColorStop(0,'rgba(0,0,0,.44)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.beginPath();g.ellipse(0,0,92,19,0,0,Math.PI*2);g.fill();g.restore();
-    drawParticles(w,h);
-    const rv=verts.map(v=>qrot(q,v));const proj=rv.map(v=>project(v,w,h));const lightDir=norm([-0.55,0.8,1.3]);
-    const fs=faces.map((f,i)=>{const n=qrot(q,faceNormals[i]),z=(rv[f[0]][2]+rv[f[1]][2]+rv[f[2]][2])/3;return {f,i,n,z}}).sort((a,b)=>a.z-b.z);
-    for(const F of fs){if(F.n[2]<-.18)continue;const pts=F.f.map(ix=>proj[ix]);const cen=[(pts[0][0]+pts[1][0]+pts[2][0])/3,(pts[0][1]+pts[1][1]+pts[2][1])/3];const lit=.3+.7*Math.max(0,dot(F.n,lightDir));
-      g.save();g.beginPath();g.moveTo(pts[0][0],pts[0][1]);g.lineTo(pts[1][0],pts[1][1]);g.lineTo(pts[2][0],pts[2][1]);g.closePath();g.fillStyle=colorFor(lit,F.z);g.fill();
-      // frosted sheen
-      const grad=g.createLinearGradient(pts[0][0],pts[0][1],pts[2][0],pts[2][1]);grad.addColorStop(0,`rgba(205,244,255,${.05+.14*lit})`);grad.addColorStop(.45,'rgba(55,149,225,.04)');grad.addColorStop(1,'rgba(3,20,63,.18)');g.fillStyle=grad;g.fill();
-      // outer glowing edges
-      g.lineJoin='round';g.strokeStyle='rgba(45,196,255,.42)';g.lineWidth=5;g.shadowColor='#35cfff';g.shadowBlur=11;g.stroke();g.shadowBlur=0;g.strokeStyle='rgba(173,239,255,.9)';g.lineWidth=1.35;g.stroke();
-      // inset triangular bevel
-      const inner=pts.map(p=>[cen[0]+(p[0]-cen[0])*.72,cen[1]+(p[1]-cen[1])*.72]);g.beginPath();g.moveTo(inner[0][0],inner[0][1]);g.lineTo(inner[1][0],inner[1][1]);g.lineTo(inner[2][0],inner[2][1]);g.closePath();g.strokeStyle='rgba(9,34,78,.78)';g.lineWidth=2.4;g.stroke();g.strokeStyle='rgba(118,222,255,.35)';g.lineWidth=.8;g.stroke();
-      if(F.n[2]>.1){let ang=Math.atan2(pts[1][1]-pts[0][1],pts[1][0]-pts[0][0]);while(ang>Math.PI/2)ang-=Math.PI;while(ang<-Math.PI/2)ang+=Math.PI;const dep=(pts[0][3]+pts[1][3]+pts[2][3])/3;const size=Math.max(12,Math.min(28,17*dep));g.translate(cen[0],cen[1]);g.rotate(ang);g.textAlign='center';g.textBaseline='middle';g.font=`700 ${size}px Georgia, 'Times New Roman', serif`;g.shadowColor='rgba(0,0,0,.7)';g.shadowBlur=4;g.fillStyle='rgba(239,251,255,.96)';g.fillText(String(nums[F.i]),0,0);}
-      g.restore();
-    }
-  }
-  function frame(now){const dt=Math.min(.035,(now-lastTime)/1000);lastTime=now;idleT+=dt;if(mode==='idle'){const bob=Math.sin(idleT*2.05)*4;oy=bob;ox=Math.sin(idleT*1.22)*2.5;const idle=qmul(qaxis([0,1,0],Math.sin(idleT*.65)*.08),qmul(qaxis([1,0,0],Math.sin(idleT*.8)*.035),q));q=qnorm(qslerp(q,idle,.028));if(Math.random()<dt*1.4)spawnSpark(.35)}else if(mode==='rolling'){const t=Math.min(1,(now-rollStart)/rollDur),spinT=Math.min(1,t/.79),a=easeOut(spinT)*Math.PI*10.5;const qr=qmul(qaxis([0,0,1],a*.43),qmul(qaxis([0,1,0],a*.86),qmul(qaxis([1,0,0],a),startQ)));if(t<.79){q=qnorm(qr);settleQ=q}else{q=qnorm(qslerp(settleQ,targetQ,smooth((t-.79)/.21)))}
-      if(t<.68){const u=t/.68;oy=-Math.sin(Math.PI*u)*92;ox=Math.sin(u*Math.PI*4.8)*(1-u)*46}else{const u=(t-.68)/.32;oy=-Math.abs(Math.sin(u*Math.PI*3.2))*(1-u)*29;ox=Math.sin(u*Math.PI*3)*(1-u)*17}scale=1+Math.max(0,-oy)/650;if(Math.random()<dt*55)spawnSpark(1.15);if(t>=1){mode='settled';q=targetQ;ox=oy=0;scale=1;for(let i=0;i<28;i++)spawnSpark(1.35);if(onDone){const cb=onDone;onDone=null;setTimeout(cb,130)}}}else if(mode==='settled'){oy=Math.sin(idleT*2.1)*1.3;ox=0;scale=1;if(Math.random()<dt*2.6)spawnSpark(.45)}stepParticles(dt);render();raf=requestAnimationFrame(frame)}
-  let onDone=null;
-  function roll(cb){if(mode==='rolling')return;onDone=cb;mode='rolling';rollStart=performance.now();startQ=q;settleQ=q}
-  function reset(){mode='idle';q=qnorm(qmul(qaxis([0,1,0],.78),qaxis([1,0,0],-.44)));ox=oy=0;scale=1;particles.length=0;onDone=null}
-  function showNat20(){mode='settled';q=targetQ;ox=oy=0;scale=1}
-  raf=requestAnimationFrame(frame);
-  return {roll,reset,resize,showNat20};
-}
-
-const d20Renderer=createD20Renderer(d20Canvas);
-
-// Text comes from text.js in the online build.
-const TEXT = window.PARTO_TEXT || {};
-function applyText(){
-  document.title=TEXT.title;
-  document.querySelector('#startOverlay h1').textContent=TEXT.title;
-  document.getElementById('introText').innerHTML=TEXT.introHtml;
-  document.getElementById('startBtn').textContent=TEXT.startButton;
-  document.getElementById('gameOverTitle').textContent=TEXT.gameOverTitle;
-  document.getElementById('gameOverText').textContent=TEXT.gameOverText;
-  document.getElementById('againBtn').textContent=TEXT.retryButton;
-  document.getElementById('nameplate').textContent=TEXT.kahuName;
-  document.getElementById('kahuText').textContent=TEXT.kahuText;
-  document.getElementById('kahuContinue').textContent=TEXT.continueText;
-  document.getElementById('birthdayPromptTitle').textContent=TEXT.birthdayPromptTitle;
-  const birthdayPromptEl=document.getElementById('birthdayPromptText');
-  birthdayPromptEl.textContent=TEXT.birthdayPromptText;
-  birthdayPromptEl.style.display = TEXT.birthdayPromptText ? 'block' : 'none';
-  birthdayMessage.textContent=TEXT.birthdayMessage;
-  birthdaySub.textContent=TEXT.birthdaySub;
-}
-applyText();
-document.getElementById('kahuContinue').textContent="Tap Continue when you're ready.";
-
-function resize(){
-  const r=shell.getBoundingClientRect();
-  W=r.width; H=r.height;
-  canvas.width=Math.round(W*devicePixelRatio);
-  canvas.height=Math.round(H*devicePixelRatio);
-  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-}
-addEventListener('resize',resize); resize();
-
-function laneX(i){ return (i+.5)*W/lanes; }
-function whaleState(){
-  const w=Math.min(88,W*.225), h=w*.56;
-  const bob=Math.sin(swimClock*6.2)*5 + Math.sin(swimClock*2.3)*1.5;
-  const drift=targetLane-lanePos;
-  const tilt=Math.sin(swimClock*6.2)*0.035 + drift*0.07;
-  const pulse=1 + collectBoost*0.05;
-  const x=laneX(lanePos)-w/2;
-  const y=H-h-Math.max(118,H*.145)+bob;
-  const turnStretch=1-Math.min(.16,Math.abs(facing)*.16);
-  return {x,y,w,h,tilt,pulse,faceScaleX:facing,turnStretch};
-}
-function whaleBox(){ const b=whaleState(); return {x:b.x,y:b.y,w:b.w,h:b.h}; }
-
-function reset(){
-  score=0; lives=3; lanePos=targetLane=2; swimClock=0; collectBoost=0;
-  facing=1; targetFacing=1; victoryStep='kahu';
-  objects.length=0; bubbles.length=0; effects.length=0; speedScale=1; spawnClock=0;
-  document.getElementById('score').textContent='0 / 15';
-  document.getElementById('lives').textContent='♥ ♥ ♥';
-  vnScene.style.display='block';
-  birthdayScreen.style.display='none';
-  birthdayScreen.classList.remove('celebrating');
-  rollResult.textContent='';
-  birthdayMessage.style.display='none';
-  birthdaySub.style.display='none';
-  birthdayDieStage.classList.remove('rolling','nat20');
-  birthdayDieStage.style.pointerEvents='auto';
-  clearTimeout(kahuUnlockTimer);
-  kahuReadyAt=Infinity;
-  kahuContinueBtn.disabled=true;
-  kahuContinueBtn.classList.remove('ready');
-  d20Renderer.reset();
-}
-function start(){
-  reset();
-  document.getElementById('startOverlay').style.display='none';
-  document.getElementById('gameOver').style.display='none';
-  document.getElementById('victory').style.display='none';
-  running=true; last=performance.now(); requestAnimationFrame(loop);
-}
-function move(d){ if(!running) return; targetLane=Math.max(0,Math.min(lanes-1,targetLane+d)); if(d>0) targetFacing=-1; else if(d<0) targetFacing=1; }
-addEventListener('keydown',e=>{
-  if(['ArrowLeft','a','A'].includes(e.key)) move(-1);
-  if(['ArrowRight','d','D'].includes(e.key)) move(1);
-  if((e.key===' '||e.key==='Enter') && !running && document.getElementById('victory').style.display!=='block') start();
-});
-document.getElementById('leftBtn').onclick=()=>move(-1);
-document.getElementById('rightBtn').onclick=()=>move(1);
-let sx=null;
-canvas.addEventListener('pointerdown',e=>sx=e.clientX);
-canvas.addEventListener('pointerup',e=>{
-  if(sx==null) return;
-  const dx=e.clientX-sx;
-  if(Math.abs(dx)>22) move(dx>0?1:-1);
-  else move(e.clientX < innerWidth/2 ? -1 : 1);
-  sx=null;
-});
-
-function spawn(){
-  const roll=Math.random();
-  const type = roll<.28 ? 'paper' : roll<.52 ? 'dice' : roll<.70 ? 'tardis' : roll<.85 ? 'moon' : 'iran_emblem';
-  let size = type==='moon' ? 64 : type==='iran_emblem' ? 70 : type==='tardis' ? 66 : 58;
-  if(W<650) size*=.52;
-  objects.push({type,lane:Math.floor(Math.random()*lanes),y:-80,size,vy:(125+Math.random()*55)*speedScale,rot:(Math.random()-.5)*.35,vr:(Math.random()-.5)*.9});
-}
-function hit(a,b){ return a.x<b.x+b.w && a.x+a.w>b.x && a.y<b.y+b.h && a.y+a.h>b.y; }
-function toast(t){
-  const el=document.getElementById('toast');
-  el.textContent=t; el.classList.add('show'); clearTimeout(el._t);
-  el._t=setTimeout(()=>el.classList.remove('show'),650);
-}
-function spawnEffect(x,y,good){
-  const particles=[];
-  const count=good?12:10;
-  for(let i=0;i<count;i++){
-    const ang=(Math.PI*2*i/count)+(Math.random()-.5)*0.45;
-    const speed=(good?70:55)+Math.random()*(good?60:40);
-    particles.push({x,y,vx:Math.cos(ang)*speed,vy:Math.sin(ang)*speed,r:(good?2.4:2)+Math.random()*3,a:.95});
-  }
-  effects.push({x,y,good,life:0,max:good?.55:.6,text:good?'+1':'-1 ♥',particles});
-}
-function collect(o){
-  const x=laneX(o.lane), y=o.y+o.size/2;
-  if(o.type==='moon' || o.type==='iran_emblem'){
-    lives--;
-    document.getElementById('lives').textContent='♥ '.repeat(Math.max(0,lives)).trim();
-    spawnEffect(x,y,false);
-    toast(o.type==='moon' ? 'Theocracy! Avoid it.' : 'IRGC! Dodge it.');
-    shell.animate([{filter:'brightness(1)'},{filter:'brightness(1.6) saturate(.4)'},{filter:'brightness(1)'}],{duration:240});
-    if(lives<=0){ running=false; document.getElementById('gameOver').style.display='grid'; }
-  }else{
-    score++;
-    collectBoost=1;
-    document.getElementById('score').textContent=score+' / 15';
-    spawnEffect(x,y,true);
-    for(let i=0;i<6;i++) bubbles.push({x,y,r:3+Math.random()*5,vy:45+Math.random()*45,vx:(Math.random()-.5)*35,a:.18+Math.random()*.2});
-    toast(o.type==='paper' ? 'Paper collected!' : o.type==='dice' ? 'd20 collected!' : 'TARDIS collected!');
-    speedScale=1+score*.022;
-    if(score>=15) win();
-  }
-}
-function showBirthdayScreen(){
-  victoryStep='birthday';
-  vnScene.style.display='none';
-  birthdayScreen.style.display='grid';
-  birthdayScreen.classList.remove('celebrating');
-  requestAnimationFrame(()=>d20Renderer.resize());
-}
-function launchConfetti(){
-  const layer=document.getElementById('confettiLayer');
-  layer.innerHTML='';
-  const colors=['#fff2a8','#84e6ff','#f6a6ff','#ffffff','#8de7b4'];
-  const confettiCount=W<700?24:70;
-  for(let i=0;i<confettiCount;i++){
-    const c=document.createElement('i');
-    c.className='confetti';
-    c.style.left=(Math.random()*100)+'%';
-    c.style.background=colors[i%colors.length];
-    c.style.setProperty('--drift',((Math.random()-.5)*240)+'px');
-    c.style.animationDelay=(Math.random()*.55)+'s';
-    c.style.animationDuration=(1.8+Math.random()*1.3)+'s';
-    layer.appendChild(c);
-  }
-  setTimeout(()=>layer.innerHTML='',3600);
-}
-function rollBirthdayDie(){
-  if(victoryStep!=='birthday' || birthdayDieStage.classList.contains('rolling') || birthdayDieStage.style.pointerEvents==='none') return;
-  birthdayDieStage.style.pointerEvents='none';
-  birthdayDieStage.classList.remove('nat20');
-  birthdayDieStage.classList.add('rolling');
-  rollResult.textContent='';
-  birthdayMessage.style.display='none';
-  birthdaySub.style.display='none';
-  d20Renderer.roll(()=>{
-    birthdayDieStage.classList.remove('rolling');
-    birthdayDieStage.classList.add('nat20');
-    d20Renderer.showNat20();
-    birthdayScreen.classList.add('celebrating');
-    rollResult.textContent=TEXT.rollResult;
-    birthdayMessage.style.display='block';
-    birthdaySub.style.display='block';
-    launchConfetti();
-  });
-}
-function win(){
-  running=false;
-  document.getElementById('victory').style.display='block';
-  victoryStep='kahu';
-  vnScene.style.display='block';
-  birthdayScreen.style.display='none';
-  kahuContinueBtn.disabled=true;
-  kahuContinueBtn.classList.remove('ready');
-  clearTimeout(kahuUnlockTimer);
-  kahuReadyAt=performance.now()+2800;
-  kahuUnlockTimer=setTimeout(()=>{
-    if(victoryStep==='kahu'){ kahuContinueBtn.disabled=false; kahuContinueBtn.classList.add('ready'); }
-  },2800);
-}
-
-function update(dt){
-  swimClock+=dt;
-  lanePos += (targetLane-lanePos)*Math.min(1,dt*10);
-  facing += (targetFacing-facing)*Math.min(1,dt*16);
-  if(Math.abs(targetFacing-facing)<0.01) facing=targetFacing;
-  collectBoost=Math.max(0,collectBoost-dt*4);
-
-  spawnClock-=dt;
-  if(spawnClock<=0){
-    spawn();
-    spawnClock=Math.max(.72,1.18-score*.010)+Math.random()*.34;
+  const ASSET_PATHS = {
+    whale:'assets/whale.png',
+    paper:'assets/paper.png',
+    dice:'assets/dice.png',
+    tardis:'assets/tardis.png',
+    moon:'assets/moon.png',
+    irgc:'assets/iran_emblem.png'
+  };
+  const images = {};
+  for (const [key,src] of Object.entries(ASSET_PATHS)) {
+    const img = new Image();
+    img.src = src;
+    images[key] = img;
   }
 
-  const wb=whaleBox();
-  const hurt={x:wb.x+wb.w*.1,y:wb.y+wb.h*.12,w:wb.w*.78,h:wb.h*.72};
+  let W = 0, H = 0, DPR = 1;
+  let running = false;
+  let score = 0;
+  let hearts = 3;
+  let lastTime = 0;
+  let spawnClock = 0;
+  let invulnerableUntil = 0;
+  let hintTimer = null;
+  const player = {x:0,y:0,targetX:0,w:0,h:0,dir:1,bob:0};
+  let objects = [];
+  let effects = [];
 
-  for(let i=objects.length-1;i>=0;i--){
-    const o=objects[i];
-    o.y+=o.vy*dt; o.rot+=o.vr*dt;
-    const x=laneX(o.lane)-o.size/2;
-    const ob={x:x+o.size*.12,y:o.y+o.size*.12,w:o.size*.76,h:o.size*.76};
-    if(hit(hurt,ob)){
-      objects.splice(i,1); collect(o); if(!running) return;
-    }else if(o.y>H+90){
-      objects.splice(i,1);
+  const collectibleTypes = [
+    {kind:'paper',good:true,label:'Paper published!'},
+    {kind:'dice',good:true,label:'Critical success.'},
+    {kind:'tardis',good:true,label:'Allons-y!'}
+  ];
+  const hazardTypes = [
+    {kind:'moon',good:false,label:'Theocracy! Avoid it.'},
+    {kind:'irgc',good:false,label:'IRGC! Dodge it.'}
+  ];
+
+  function resize(){
+    const rect = canvas.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.max(1, rect.width);
+    H = Math.max(1, rect.height);
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    const whaleW = Math.min(124, Math.max(92, W * .29));
+    player.w = whaleW;
+    player.h = whaleW * (576/844);
+    player.y = H - Math.max(112, H * .18) - player.h/2;
+    if (!player.x) player.x = W/2;
+    player.targetX = clamp(player.targetX || W/2, player.w*.48, W-player.w*.48);
+    player.x = clamp(player.x, player.w*.48, W-player.w*.48);
+  }
+
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+  function rand(a,b){ return a + Math.random()*(b-a); }
+
+  function resetGame(){
+    score = 0;
+    hearts = 3;
+    objects = [];
+    effects = [];
+    spawnClock = 0;
+    invulnerableUntil = 0;
+    player.x = player.targetX = W/2;
+    updateHud();
+    gameOver.classList.remove('active');
+    vnScreen.classList.remove('active');
+    birthdayScreen.classList.remove('active');
+    startScreen.classList.remove('active');
+    gestureHint.style.opacity = '1';
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(()=>gestureHint.style.opacity='0', 4300);
+    running = true;
+    lastTime = performance.now();
+    requestAnimationFrame(loop);
+  }
+
+  function updateHud(){
+    heartsEl.textContent = Array.from({length:3},(_,i)=>i<hearts?'♥':'♡').join(' ');
+    progressEl.textContent = `${score} / 15`;
+  }
+
+  function spawnObject(){
+    const isGood = Math.random() < .72;
+    const source = isGood ? collectibleTypes : hazardTypes;
+    const type = source[Math.floor(Math.random()*source.length)];
+    const size = type.kind === 'irgc' ? rand(38,46) : rand(42,51);
+    const margin = size*.65;
+    const x = rand(margin,W-margin);
+    const baseSpeed = H < 700 ? rand(165,205) : rand(185,230);
+    objects.push({
+      ...type,
+      x,y:-size,
+      size,
+      speed:baseSpeed + score*2.1,
+      spin:rand(-.32,.32),
+      angle:rand(-.15,.15)
+    });
+  }
+
+  function playerRect(){
+    return {x:player.x-player.w*.34,y:player.y-player.h*.28,w:player.w*.68,h:player.h*.55};
+  }
+  function objectRect(o){
+    const s=o.size*.68;
+    return {x:o.x-s/2,y:o.y-s/2,w:s,h:s};
+  }
+  function intersects(a,b){
+    return a.x < b.x+b.w && a.x+a.w > b.x && a.y < b.y+b.h && a.y+a.h > b.y;
+  }
+
+  function showToast(text){
+    toastEl.textContent = text;
+    toastEl.classList.remove('show');
+    void toastEl.offsetWidth;
+    toastEl.classList.add('show');
+    clearTimeout(showToast.t);
+    showToast.t = setTimeout(()=>toastEl.classList.remove('show'), 850);
+  }
+
+  function addEffect(x,y,good){
+    effects.push({x,y,good,life:0,max:.55});
+  }
+
+  function collect(o, now){
+    if (o.good){
+      score++;
+      addEffect(o.x,o.y,true);
+      showToast(o.label);
+      updateHud();
+      if (score >= 15){
+        winGame();
+      }
+    } else if (now >= invulnerableUntil){
+      hearts--;
+      invulnerableUntil = now + 950;
+      addEffect(o.x,o.y,false);
+      showToast(o.label);
+      if (navigator.vibrate) navigator.vibrate(70);
+      updateHud();
+      if (hearts <= 0){
+        loseGame();
+      }
     }
   }
 
-  if(Math.random()<dt*2.5) bubbles.push({x:Math.random()*W,y:H+10,r:2+Math.random()*5,vy:20+Math.random()*40,vx:(Math.random()-.5)*8,a:.15+Math.random()*.28});
-  const ws=whaleState();
-  if(running && Math.random()<dt*(8+Math.abs(targetLane-lanePos)*26)) bubbles.push({x:ws.x+ws.w*.84+(Math.random()-.5)*8,y:ws.y+ws.h*.63+(Math.random()-.5)*10,r:2+Math.random()*4,vy:25+Math.random()*35,vx:8+Math.random()*20,a:.18+Math.random()*.24});
+  function update(dt,now){
+    player.bob += dt*5.1;
+    player.x += (player.targetX-player.x) * Math.min(1,dt*10);
 
-  for(let i=bubbles.length-1;i>=0;i--){
-    const b=bubbles[i];
-    b.y-=b.vy*dt; b.x+=(b.vx||0)*dt; b.a*=1-dt*.22;
-    if(b.y<-10 || b.x<-20 || b.x>W+20 || b.a<.03) bubbles.splice(i,1);
+    spawnClock -= dt;
+    if (spawnClock <= 0){
+      spawnObject();
+      spawnClock = Math.max(.52, .82 - score*.012) + Math.random()*.24;
+    }
+
+    const pRect = playerRect();
+    const keep=[];
+    for (const o of objects){
+      o.y += o.speed*dt;
+      o.angle += o.spin*dt;
+      if (intersects(pRect,objectRect(o))){
+        collect(o,now);
+        if (!running) return;
+        continue;
+      }
+      if (o.y < H+o.size) keep.push(o);
+    }
+    objects=keep;
+
+    for (const e of effects) e.life += dt;
+    effects = effects.filter(e=>e.life<e.max);
   }
 
-  for(let i=effects.length-1;i>=0;i--){
-    const e=effects[i]; e.life+=dt;
-    for(const p of e.particles){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=15*dt; p.a=Math.max(0,p.a-dt*1.8); }
-    if(e.life>=e.max) effects.splice(i,1);
-  }
-}
-
-function drawBg(){
-  ctx.clearRect(0,0,W,H);
-
-  ctx.save();
-  for(const b of bubbles){
-    ctx.globalAlpha=b.a;
-    ctx.strokeStyle='#dffbff'; ctx.lineWidth=1.2;
-    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.stroke();
-  }
-  ctx.restore();
-}
-function drawObj(o){
-  const im=imgs[o.type];
-  const x=laneX(o.lane), y=o.y+o.size/2;
-  ctx.save();
-  ctx.translate(x,y); ctx.rotate(o.rot);
-  let w=o.size, h=o.size;
-  if(o.type==='paper') w=h=o.size*1.08;
-  if(o.type==='tardis'){ w=o.size*.82; h=o.size*1.2; }
-  if(o.type==='iran_emblem'){ w=h=o.size*1.02; }
-  ctx.drawImage(im,-w/2,-h/2,w,h);
-  ctx.restore();
-}
-function drawEffects(){
-  for(const e of effects){
-    const t=e.life/e.max, alpha=Math.max(0,1-t);
+  function drawBackground(){
     ctx.save();
-    ctx.globalAlpha=alpha;
-    ctx.lineWidth=3;
-    ctx.strokeStyle=e.good?'rgba(255,236,140,.95)':'rgba(255,150,150,.95)';
-    ctx.beginPath();
-    ctx.arc(e.x,e.y,12+t*44,0,Math.PI*2);
-    ctx.stroke();
-    for(const p of e.particles){
-      ctx.globalAlpha=Math.min(alpha,p.a);
-      ctx.fillStyle=e.good?'#fff3b1':'#ffd1d1';
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha=.14;
+    ctx.fillStyle='#fff';
+    const t=performance.now()/1000;
+    for(let i=0;i<13;i++){
+      const r=1.5+(i%4);
+      const x=((i*83 + t*(8+i%3)*7)%(W+40))-20;
+      const y=((i*149 - t*(12+i%5)*10)%(H+100)+H+100)%(H+100)-30;
+      ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
     }
-    ctx.globalAlpha=alpha;
-    ctx.font='800 24px Inter, Segoe UI, Arial, sans-serif';
-    ctx.textAlign='center';
-    ctx.fillStyle=e.good?'#fff3b1':'#ffd1d1';
-    ctx.fillText(e.text,e.x,e.y-20-t*24);
+    ctx.restore();
+
+    const floorY=H-Math.max(34,H*.055);
+    ctx.fillStyle='rgba(185,151,95,.88)';
+    ctx.beginPath();
+    ctx.moveTo(0,H);
+    ctx.lineTo(0,floorY+8);
+    for(let x=0;x<=W;x+=40){
+      ctx.lineTo(x,floorY + Math.sin(x*.055)*7 + Math.sin(x*.018)*4);
+    }
+    ctx.lineTo(W,H);ctx.closePath();ctx.fill();
+  }
+
+  function drawObjects(){
+    for (const o of objects){
+      const img=images[o.kind];
+      if (!img.complete) continue;
+      ctx.save();
+      ctx.translate(o.x,o.y);
+      ctx.rotate(o.angle);
+      ctx.globalAlpha=.98;
+      ctx.drawImage(img,-o.size/2,-o.size/2,o.size,o.size);
+      ctx.restore();
+    }
+  }
+
+  function drawPlayer(now){
+    const img=images.whale;
+    if (!img.complete) return;
+    const bob=Math.sin(player.bob)*2.2;
+    const flashing=now<invulnerableUntil && Math.floor(now/90)%2===0;
+    ctx.save();
+    ctx.translate(player.x,player.y+bob);
+    if (player.dir<0) ctx.scale(-1,1);
+    ctx.globalAlpha=flashing?.38:1;
+    ctx.drawImage(img,-player.w/2,-player.h/2,player.w,player.h);
     ctx.restore();
   }
-}
-function drawWhale(){
-  const b=whaleState();
-  ctx.save();
-  ctx.translate(b.x+b.w/2,b.y+b.h/2);
-  ctx.rotate(b.tilt);
-  const mobileWhaleYScale=W<700?1:(1+b.turnStretch);
-  ctx.scale(b.faceScaleX*b.pulse,mobileWhaleYScale*b.pulse*(1-collectBoost*0.02));
-  ctx.shadowColor='rgba(0,25,38,.5)'; ctx.shadowBlur=14;
-  ctx.drawImage(imgs.whale,-b.w/2,-b.h/2,b.w,b.h);
-  if(running){
-    ctx.globalAlpha=.18+collectBoost*.12;
-    ctx.fillStyle='#dffbff';
-    ctx.beginPath();
-    ctx.ellipse(-b.w*.08,b.h*.34,b.w*.12,b.h*.05,0,0,Math.PI*2);
-    ctx.fill();
+
+  function drawEffects(){
+    for(const e of effects){
+      const p=e.life/e.max;
+      ctx.save();
+      ctx.globalAlpha=1-p;
+      ctx.strokeStyle=e.good?'#d8f7ff':'#ffd0d0';
+      ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(e.x,e.y,12+p*32,0,Math.PI*2);ctx.stroke();
+      ctx.restore();
+    }
   }
-  ctx.restore();
-}
-function draw(){ drawBg(); for(const o of objects) drawObj(o); drawEffects(); drawWhale(); }
-function loop(t){ if(!running) return; const dt=Math.min(.035,(t-last)/1000); last=t; update(dt); draw(); if(running) requestAnimationFrame(loop); }
-for(const id of ['startBtn','againBtn']) document.getElementById(id).onclick=start;
-kahuContinueBtn.onclick=(e)=>{
-  e.stopPropagation();
-  if(victoryStep==='kahu' && !kahuContinueBtn.disabled && performance.now()>=kahuReadyAt && kahuContinueBtn.classList.contains('ready')) showBirthdayScreen();
-};
-vnScene.addEventListener('click',e=>{ if(e.target!==kahuContinueBtn) e.stopPropagation(); });
-birthdayDieStage.onclick=rollBirthdayDie;
-birthdayDieStage.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();rollBirthdayDie();}});
-Promise.all([...document.images].map(i=>i.complete?Promise.resolve():new Promise(r=>i.onload=r))).then(()=>draw());
+
+  function draw(now){
+    ctx.clearRect(0,0,W,H);
+    drawBackground();
+    drawObjects();
+    drawEffects();
+    drawPlayer(now);
+  }
+
+  function loop(now){
+    if (!running) return;
+    const dt=Math.min(.035,(now-lastTime)/1000||0);
+    lastTime=now;
+    update(dt,now);
+    draw(now);
+    if (running) requestAnimationFrame(loop);
+  }
+
+  function loseGame(){
+    running=false;
+    gestureHint.style.opacity='0';
+    gameOver.classList.add('active');
+  }
+
+  function winGame(){
+    running=false;
+    gestureHint.style.opacity='0';
+    objects=[];
+    setTimeout(()=>{
+      vnScreen.classList.add('active');
+      continueBtn.classList.remove('ready');
+      setTimeout(()=>continueBtn.classList.add('ready'),2800);
+    },260);
+  }
+
+  function moveTo(clientX){
+    const rect=canvas.getBoundingClientRect();
+    const x=clientX-rect.left;
+    const old=player.targetX;
+    player.targetX=clamp(x,player.w*.48,W-player.w*.48);
+    if (Math.abs(player.targetX-old)>2) player.dir=player.targetX<player.x?-1:1;
+  }
+
+  let pointerDown=false;
+  canvas.addEventListener('pointerdown',e=>{ if(!running)return; pointerDown=true; canvas.setPointerCapture?.(e.pointerId); moveTo(e.clientX); });
+  canvas.addEventListener('pointermove',e=>{ if(pointerDown&&running) moveTo(e.clientX); });
+  canvas.addEventListener('pointerup',()=>pointerDown=false);
+  canvas.addEventListener('pointercancel',()=>pointerDown=false);
+
+  startBtn.addEventListener('click',resetGame);
+  retryBtn.addEventListener('click',resetGame);
+  continueBtn.addEventListener('click',()=>{
+    if(!continueBtn.classList.contains('ready')) return;
+    vnScreen.classList.remove('active');
+    birthdayScreen.classList.add('active');
+  });
+
+  dieButton.addEventListener('click',()=>{
+    if(dieButton.classList.contains('rolling')||dieButton.classList.contains('done')) return;
+    dieButton.classList.add('rolling');
+    setTimeout(()=>{
+      dieButton.classList.remove('rolling');
+      dieButton.classList.add('done');
+      birthdayMessage.classList.add('show');
+      burstConfetti();
+      if(navigator.vibrate) navigator.vibrate([45,40,80]);
+    },1450);
+  });
+
+  function burstConfetti(){
+    confetti.innerHTML='';
+    const colors=['#fff1a8','#8eeaff','#f5b4d6','#ffffff','#9ae4bf'];
+    for(let i=0;i<54;i++){
+      const piece=document.createElement('span');
+      piece.className='confettiPiece';
+      piece.style.left=(Math.random()*100)+'%';
+      piece.style.background=colors[i%colors.length];
+      piece.style.setProperty('--drift',rand(-90,90)+'px');
+      piece.style.setProperty('--dur',rand(2.1,3.3)+'s');
+      piece.style.animationDelay=rand(0,.35)+'s';
+      confetti.appendChild(piece);
+    }
+  }
+
+  window.addEventListener('resize',resize,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(resize,120),{passive:true});
+  resize();
+  updateHud();
+  draw(performance.now());
+})();
 </script>
 </body>
 </html>
